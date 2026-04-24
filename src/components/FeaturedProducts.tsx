@@ -10,14 +10,13 @@ export default function FeaturedProducts() {
     <section className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-14">
-          <p className="section-subtitle mb-3">Selección Curada</p>
-          <h2 className="section-title">Fragancias Destacadas</h2>
-          <div className="luxury-divider max-w-xs mx-auto mt-6">
-            <span className="text-gold text-xs">✦</span>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4">
+          <div>
+            <p className="section-subtitle mb-3">Selección Curada</p>
+            <h2 className="font-serif text-4xl md:text-5xl text-luxury-black leading-none">Fragancias<br /><em className="not-italic text-gold">Destacadas</em></h2>
           </div>
-          <p className="font-sans font-light text-sm text-luxury-gray max-w-md mx-auto mt-5 leading-relaxed">
-            Una cuidadosa selección de las fragancias más extraordinarias de nuestra colección.
+          <p className="font-sans font-light text-xs text-luxury-gray max-w-xs leading-relaxed md:text-right">
+            Una selección extraordinaria de las fragancias más icónicas de nuestra colección.
           </p>
         </div>
 

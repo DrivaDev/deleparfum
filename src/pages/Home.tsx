@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import FeaturedProducts from '../components/FeaturedProducts';
-import CategorySection from '../components/CategorySection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import NewsletterSection from '../components/NewsletterSection';
 import ProductCard from '../components/ProductCard';
@@ -16,18 +15,18 @@ export default function Home() {
       <HeroSection />
 
       {/* Brand promise strip */}
-      <div className="bg-luxury-black py-5">
+      <div className="bg-luxury-black py-4 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
+          <div className="flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
             {[
               'Fragancias 100% Auténticas',
               'Envío Gratuito +$50.000',
               'Packaging de Lujo Incluido',
               'Devolución en 30 días',
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-1 h-1 bg-gold rounded-full flex-shrink-0" />
-                <p className="font-sans font-light text-[10px] tracking-widest uppercase text-white/70 whitespace-nowrap">
+              <div key={i} className="flex items-center gap-3 flex-shrink-0">
+                {i > 0 && <div className="w-px h-3 bg-white/20" />}
+                <p className="font-sans font-light text-[10px] tracking-[0.3em] uppercase text-white/50 whitespace-nowrap">
                   {item}
                 </p>
               </div>
@@ -38,44 +37,44 @@ export default function Home() {
 
       <FeaturedProducts />
 
-      {/* Editorial banner */}
-      <section className="relative py-28 overflow-hidden">
+      {/* Editorial split banner */}
+      <section className="grid md:grid-cols-2 min-h-[520px]">
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1600&q=80')` }}
+          className="relative min-h-[300px] md:min-h-0 bg-cover bg-center"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1541643600914-78b084683702?w=900&q=80')` }}
         >
-          <div className="absolute inset-0 bg-luxury-black/75" />
+          <div className="absolute inset-0 bg-luxury-black/30" />
         </div>
-        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
-          <p className="font-sans font-light text-[10px] tracking-[0.4em] uppercase text-gold mb-5">
-            Filosofía ÉLIXIR
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl text-white leading-tight mb-6">
-            "Un perfume es la última y más perfecta expresión de la memoria"
-          </h2>
-          <p className="font-sans font-light text-sm text-white/60 mb-8 italic">
-            — Christian Dior
-          </p>
-          <Link
-            to="/catalogo"
-            className="inline-flex items-center gap-2 font-sans font-light text-xs tracking-widest uppercase text-gold hover:text-gold-light border-b border-gold pb-1 transition-colors"
-          >
-            Descubrí nuestra colección
-            <ArrowRight size={14} strokeWidth={1.5} />
-          </Link>
+        <div className="bg-luxury-black flex items-center justify-center px-10 md:px-16 py-20">
+          <div className="max-w-sm">
+            <p className="font-sans font-light text-[9px] tracking-[0.5em] uppercase text-gold mb-6">
+              Filosofía ÉLIXIR
+            </p>
+            <blockquote className="font-serif text-3xl md:text-4xl text-white leading-tight mb-6">
+              "Un perfume es la última y más perfecta expresión de la memoria"
+            </blockquote>
+            <p className="font-sans font-light text-xs text-white/40 mb-10 tracking-wider">
+              — Christian Dior
+            </p>
+            <Link
+              to="/catalogo"
+              className="group inline-flex items-center gap-3 font-sans font-light text-[10px] tracking-widest uppercase text-gold hover:text-white transition-colors"
+            >
+              Descubrí la colección
+              <ArrowRight size={12} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      <CategorySection />
-
       {/* New arrivals */}
       {newProducts.length > 0 && (
-        <section className="py-20 md:py-28 bg-white">
+        <section className="py-20 md:py-28 bg-cream">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between mb-12">
               <div>
-                <p className="section-subtitle mb-2">Recién llegadas</p>
-                <h2 className="section-title">Novedades</h2>
+                <p className="section-subtitle mb-3">Recién llegadas</p>
+                <h2 className="font-serif text-4xl md:text-5xl text-luxury-black leading-none">Novedades</h2>
               </div>
               <Link
                 to="/catalogo?filter=new"
