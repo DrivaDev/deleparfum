@@ -93,6 +93,56 @@ export default function Home() {
       )}
 
       <TestimonialsSection />
+
+      {/* Social media section */}
+      <section className="py-20 md:py-24 bg-luxury-black text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="font-sans font-light text-[9px] tracking-[0.5em] uppercase text-gold mb-5">
+            Seguinos en redes
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl text-white mb-4 leading-tight">
+            Viví la experiencia<br />
+            <em className="not-italic text-gold">ÉLIXIR</em>
+          </h2>
+          <p className="font-sans font-light text-sm text-white/50 max-w-md mx-auto mb-10 leading-relaxed">
+            Descubrí nuevas fragancias, looks del día y contenido exclusivo en nuestras redes.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="https://instagram.com/deleparfum"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 px-8 py-4 border border-white/20 hover:border-gold hover:text-gold transition-all duration-300 w-full sm:w-auto justify-center"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+              <div className="text-left">
+                <p className="font-sans font-light text-xs tracking-widest uppercase">Instagram</p>
+                <p className="font-sans font-light text-[10px] text-white/40 group-hover:text-gold/60 transition-colors">@deleparfum</p>
+              </div>
+            </a>
+
+            <a
+              href="https://tiktok.com/@deleparfum_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 px-8 py-4 border border-white/20 hover:border-gold hover:text-gold transition-all duration-300 w-full sm:w-auto justify-center"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+              </svg>
+              <div className="text-left">
+                <p className="font-sans font-light text-xs tracking-widest uppercase">TikTok</p>
+                <p className="font-sans font-light text-[10px] text-white/40 group-hover:text-gold/60 transition-colors">@deleparfum_</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

@@ -37,7 +37,7 @@ export default function Footer() {
               La maison de perfumería más exclusiva de Argentina. Traemos el mundo
               de la haute parfumerie directamente a vos.
             </p>
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-3 mt-6">
               <a
                 href="https://instagram.com/deleparfum"
                 target="_blank"
@@ -47,8 +47,23 @@ export default function Footer() {
               >
                 <Instagram size={14} strokeWidth={1.5} />
               </a>
+              <a
+                href="https://tiktok.com/@deleparfum_"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok @deleparfum_"
+                className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
+              >
+                {/* TikTok icon (not in lucide, use SVG) */}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+                </svg>
+              </a>
             </div>
-            <p className="font-sans font-light text-[10px] text-white/30 mt-2">@deleparfum</p>
+            <div className="flex gap-3 mt-2">
+              <p className="font-sans font-light text-[10px] text-white/30">@deleparfum</p>
+              <p className="font-sans font-light text-[10px] text-white/30">@deleparfum_</p>
+            </div>
           </div>
 
           {/* Link columns */}

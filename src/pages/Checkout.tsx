@@ -86,7 +86,7 @@ export default function Checkout() {
     else if (step === 'shipping') setStep('payment');
     else {
       clearCart();
-      navigate('/confirmacion', { state: { form, total: total + shipping } });
+      navigate('/confirmacion', { state: { form, total: total + shipping, items } });
     }
   };
 
@@ -166,7 +166,7 @@ export default function Checkout() {
                 </Field>
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Ciudad *" error={errors.city}>
-                    <input className="input-field" value={form.city} onChange={e => update('city', e.target.value)} placeholder="Buenos Aires" />
+                    <input className="input-field" value={form.city} onChange={e => update('city', e.target.value)} placeholder="Saavedra" />
                   </Field>
                   <Field label="Provincia *" error={errors.province}>
                     <select className="input-field" value={form.province} onChange={e => update('province', e.target.value)}>

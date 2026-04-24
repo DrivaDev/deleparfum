@@ -1,13 +1,85 @@
+import { useEffect, useRef } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { CheckCircle, Package, Mail, ArrowRight } from 'lucide-react';
+import { CheckCircle, Package, MessageCircle, ArrowRight } from 'lucide-react';
 import { formatPrice } from '../store/cartStore';
 import Logo from '../components/Logo';
 
+const WA_NUMBER = '5491139399189';
+
+function buildWhatsAppMessage(orderNumber: string, form: Record<string, string>, total: number, items: { name: string; size: number; qty: number; price: number }[]): string {
+  const paymentLabels: Record<string, string> = {
+    debito: 'Tarjeta de débito',
+    credito: 'Tarjeta de crédito',
+    transferencia: 'Transferencia bancaria',
+  };
+
+  const lines: string[] = [
+    '✨ *NUEVO PEDIDO — De Le Parfum* ✨',
+    '━━━━━━━━━━━━━━━━━━━━━━━',
+    '',
+    `🔖 *Pedido:* ${orderNumber}`,
+    '',
+    '👤 *Cliente*',
+    `   ${form.firstName} ${form.lastName}`,
+    `   📧 ${form.email}`,
+    `   📱 ${form.phone}`,
+    '',
+    '📦 *Productos*',
+    ...items.map(i => `   • ${i.name} ${i.size}ml × ${i.qty}  →  ${formatPrice(i.price * i.qty)}`),
+    '',
+    '🏠 *Dirección de envío*',
+    `   ${form.address}`,
+    `   ${form.city}, ${form.province} ${form.postalCode}`,
+    '',
+    `💳 *Método de pago:* ${paymentLabels[form.paymentMethod] ?? form.paymentMethod}`,
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━',
+    `💰 *TOTAL: ${formatPrice(total)}*`,
+    '━━━━━━━━━━━━━━━━━━━━━━━',
+  ];
+
+  return lines.join('\n');
+}
+
 export default function OrderConfirmation() {
   const { state } = useLocation();
-  const orderNumber = `ELX-${Date.now().toString().slice(-6)}`;
-  const total = state?.total ?? 0;
-  const form = state?.form;
+  const orderNumber = useRef(`DLP-${Date.now().toString().slice(-6)}`).current;
+  const total: number = state?.total ?? 0;
+  const form: Record<string, string> = state?.form ?? {};
+  const cartItems: { product: { name: string }; selectedSize: { ml: number; price: number }; quantity: number }[] = state?.items ?? [];
+
+  useEffect(() => {
+    if (!form.firstName) return;
+
+    const items = cartItems.map(i => ({
+      name: i.product.name,
+      size: i.selectedSize.ml,
+      qty: i.quantity,
+      price: i.selectedSize.price,
+    }));
+
+    const msg = buildWhatsAppMessage(orderNumber, form, total, items);
+    const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+    // Small delay so the confirmation page renders first
+    const timer = setTimeout(() => {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }, 800);
+
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const waItems = cartItems.map(i => ({
+    name: i.product.name,
+    size: i.selectedSize.ml,
+    qty: i.quantity,
+    price: i.selectedSize.price,
+  }));
+
+  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+    buildWhatsAppMessage(orderNumber, form, total, waItems)
+  )}`;
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">
@@ -15,7 +87,7 @@ export default function OrderConfirmation() {
       <header className="bg-white border-b border-gray-100 py-4">
         <div className="max-w-4xl mx-auto px-4 flex justify-center">
           <Link to="/">
-            <Logo variant="dark" size="sm" showTagline />
+            <Logo variant="dark" size="sm" />
           </Link>
         </div>
       </header>
@@ -36,8 +108,7 @@ export default function OrderConfirmation() {
             ¡Gracias por tu compra!
           </h1>
           <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed mb-2">
-            Tu pedido ha sido procesado exitosamente.
-            {form?.email && ` Te enviamos la confirmación a ${form.email}.`}
+            Tu pedido fue procesado. Nos contactaremos a la brevedad para coordinar el envío.
           </p>
 
           {/* Order info */}
@@ -74,12 +145,12 @@ export default function OrderConfirmation() {
             )}
           </div>
 
-          {/* Status steps */}
+          {/* Status */}
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="bg-white border border-gray-100 p-4 flex flex-col items-center gap-3">
-              <Mail size={20} strokeWidth={1} className="text-gold" />
+              <MessageCircle size={20} strokeWidth={1} className="text-gold" />
               <p className="font-sans font-light text-[10px] tracking-wide text-luxury-gray text-center">
-                Confirmación enviada por email
+                Detalle enviado por WhatsApp
               </p>
             </div>
             <div className="bg-white border border-gray-100 p-4 flex flex-col items-center gap-3">
@@ -90,8 +161,19 @@ export default function OrderConfirmation() {
             </div>
           </div>
 
+          {/* WhatsApp manual fallback */}
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white font-sans font-light text-xs tracking-widest uppercase hover:bg-[#20bc59] transition-colors"
+          >
+            <MessageCircle size={14} strokeWidth={1.5} />
+            Abrir WhatsApp con el pedido
+          </a>
+
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
             <Link to="/catalogo" className="btn-primary flex items-center justify-center gap-2">
               Seguir comprando
               <ArrowRight size={14} strokeWidth={1.5} />
@@ -103,8 +185,13 @@ export default function OrderConfirmation() {
 
           <p className="font-sans font-light text-[10px] text-luxury-lightgray mt-8">
             ¿Consultas? Escribinos a{' '}
-            <a href="mailto:hola@elixir.com.ar" className="text-gold hover:underline">
-              hola@elixir.com.ar
+            <a
+              href="https://instagram.com/deleparfum"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold hover:underline"
+            >
+              @deleparfum
             </a>
           </p>
         </div>
