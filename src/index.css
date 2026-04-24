@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-luxury-charcoal bg-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-black text-white font-sans font-light tracking-widest uppercase text-xs transition-all duration-300 hover:bg-gold hover:text-luxury-black focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3 border border-luxury-black text-luxury-black font-sans font-light tracking-widest uppercase text-xs transition-all duration-300 hover:bg-luxury-black hover:text-white focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3 bg-gold text-luxury-black font-sans font-light tracking-widest uppercase text-xs transition-all duration-300 hover:bg-gold-dark hover:text-white focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2;
+  }
+
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl text-luxury-black leading-tight;
+  }
+
+  .section-subtitle {
+    @apply font-sans font-light text-luxury-lightgray tracking-widest uppercase text-xs;
+  }
+
+  .input-field {
+    @apply w-full border border-gray-200 px-4 py-3 font-sans font-light text-sm text-luxury-charcoal placeholder-luxury-lightgray focus:outline-none focus:border-gold transition-colors duration-200;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-xl;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar for cart sidebar */
+.cart-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.cart-scrollbar::-webkit-scrollbar-track {
+  background: #F5F0E8;
+}
+.cart-scrollbar::-webkit-scrollbar-thumb {
+  background: #C9A96E;
+  border-radius: 2px;
+}
+
+/* Gold shimmer animation for luxury elements */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gold-shimmer {
+  background: linear-gradient(90deg, #C9A96E 0%, #E2C89A 50%, #C9A96E 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider with center diamond */
+.luxury-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #C9A96E;
+}
+
+.luxury-divider::before,
+.luxury-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #C9A96E);
+}
+
+.luxury-divider::after {
+  background: linear-gradient(to left, transparent, #C9A96E);
+}
