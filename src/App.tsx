@@ -9,6 +9,8 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
+import ReturnPolicy from './pages/ReturnPolicy';
+import Admin from './pages/Admin';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -20,7 +22,7 @@ function ScrollToTop() {
 }
 
 // Pages that use their own header (no Navbar/Footer)
-const STANDALONE_ROUTES = ['/checkout', '/confirmacion'];
+const STANDALONE_ROUTES = ['/checkout', '/confirmacion', '/admin'];
 
 function Layout() {
   const { pathname } = useLocation();
@@ -38,6 +40,8 @@ function Layout() {
         <Route path="/carrito" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmacion" element={<OrderConfirmation />} />
+        <Route path="/politica-de-devoluciones" element={<ReturnPolicy />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       {!isStandalone && <Footer />}
     </>

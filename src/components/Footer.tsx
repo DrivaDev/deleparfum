@@ -5,13 +5,12 @@ import Logo from './Logo';
 const footerLinks = {
   'La Boutique': [
     { label: 'Catálogo', path: '/catalogo' },
-    { label: 'Novedades', path: '/catalogo?filter=new' },
-    { label: 'Colecciones', path: '/catalogo?category=featured' },
     { label: 'Marcas', path: '/catalogo' },
+    { label: 'Política de devoluciones', path: '/politica-de-devoluciones' },
   ],
   'Ayuda': [
     { label: 'Envíos', path: '#' },
-    { label: 'Devoluciones', path: '#' },
+    { label: 'Devoluciones', path: '/politica-de-devoluciones' },
     { label: 'Preguntas frecuentes', path: '#' },
     { label: 'Contacto', path: '#' },
   ],

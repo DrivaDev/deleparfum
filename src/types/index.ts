@@ -72,6 +72,7 @@ export interface CheckoutForm {
   city: string;
   province: string;
   postalCode: string;
+  paymentMethod: 'debito' | 'credito' | 'transferencia' | '';
   cardNumber: string;
   cardName: string;
   cardExpiry: string;
