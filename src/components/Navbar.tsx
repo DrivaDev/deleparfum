@@ -8,6 +8,7 @@ import SearchModal from './SearchModal';
 const navLinks = [
   { label: 'Inicio', path: '/' },
   { label: 'Catálogo', path: '/catalogo' },
+  { label: 'Envíos', path: '/envios' },
   { label: 'Devoluciones', path: '/politica-de-devoluciones' },
 ];
 
@@ -46,7 +47,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Left nav links — desktop */}
             <nav className="hidden md:flex items-center gap-8 flex-1">
-              {navLinks.slice(0, 1).map(link => (
+              {navLinks.slice(0, 2).map(link => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -72,7 +73,7 @@ export default function Navbar() {
 
             {/* Right nav links + icons — desktop */}
             <div className="hidden md:flex items-center gap-8 flex-1 justify-end">
-              {navLinks.slice(1).map(link => (
+              {navLinks.slice(2).map(link => (
                 <Link
                   key={link.path}
                   to={link.path}

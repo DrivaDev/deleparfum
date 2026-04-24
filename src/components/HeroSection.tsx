@@ -38,12 +38,6 @@ export default function HeroSection() {
               Explorar
               <ArrowRight size={14} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
-            <Link
-              to="/catalogo?filter=new"
-              className="font-sans font-light text-[10px] tracking-widest uppercase text-white/60 hover:text-gold transition-colors border-b border-white/20 hover:border-gold pb-0.5"
-            >
-              Ver novedades
-            </Link>
           </div>
         </div>
       </div>

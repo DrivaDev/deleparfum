@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   BarChart3, Package, ShoppingBag, Plus, Edit2, Trash2, X, Save,
   DollarSign, Tag, Clock, CheckCircle2, Truck, XCircle,
-  AlertCircle, ImagePlus, Percent, Hash, ChevronDown,
+  AlertCircle, ImagePlus, Percent, Hash,
   ArrowUpRight, ExternalLink,
 } from 'lucide-react';
 import { products as initialProducts } from '../data/products';
@@ -439,15 +439,12 @@ export default function Admin() {
                           </td>
                           <td className="px-5 py-4">
                             <div className="flex justify-center">
-                              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] font-light ${s?.bg} ${s?.text} ${s?.border}`}>
+                              <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full border text-[10px] font-light ${s?.bg} ${s?.text} ${s?.border}`}>
                                 <SIcon size={11} strokeWidth={1.5} />
-                                {s?.label}
-                                <ChevronDown size={10} className="opacity-50" />
                                 <select
                                   value={o.status}
                                   onChange={e => setOrders(prev => prev.map(ord => ord.id === o.id ? { ...ord, status: e.target.value } : ord))}
-                                  className="absolute opacity-0 cursor-pointer w-full h-full inset-0"
-                                  style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
+                                  className={`bg-transparent border-none outline-none text-[10px] font-light cursor-pointer ${s?.text}`}
                                 >
                                   <option value="procesando">Procesando</option>
                                   <option value="en_camino">En camino</option>

@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import ReturnPolicy from './pages/ReturnPolicy';
+import Shipping from './pages/Shipping';
 import Admin from './pages/Admin';
 
 // Scroll to top on route change
@@ -41,6 +42,7 @@ function Layout() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmacion" element={<OrderConfirmation />} />
         <Route path="/politica-de-devoluciones" element={<ReturnPolicy />} />
+        <Route path="/envios" element={<Shipping />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
       {!isStandalone && <Footer />}

@@ -83,7 +83,7 @@ export default function Home() {
                 <ArrowRight size={12} strokeWidth={1.5} />
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-7">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-7">
               {newProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}

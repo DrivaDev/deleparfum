@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 import Logo from './Logo';
 
 const footerLinks = {
@@ -9,7 +9,7 @@ const footerLinks = {
     { label: 'Política de devoluciones', path: '/politica-de-devoluciones' },
   ],
   'Ayuda': [
-    { label: 'Envíos', path: '#' },
+    { label: 'Envíos', path: '/envios' },
     { label: 'Devoluciones', path: '/politica-de-devoluciones' },
     { label: 'Preguntas frecuentes', path: '#' },
     { label: 'Contacto', path: '#' },
@@ -39,27 +39,16 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 mt-6">
               <a
-                href="#"
-                aria-label="Instagram"
+                href="https://instagram.com/deleparfum"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram @deleparfum"
                 className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
               >
                 <Instagram size={14} strokeWidth={1.5} />
               </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
-              >
-                <Facebook size={14} strokeWidth={1.5} />
-              </a>
-              <a
-                href="#"
-                aria-label="Twitter"
-                className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
-              >
-                <Twitter size={14} strokeWidth={1.5} />
-              </a>
             </div>
+            <p className="font-sans font-light text-[10px] text-white/30 mt-2">@deleparfum</p>
           </div>
 
           {/* Link columns */}
