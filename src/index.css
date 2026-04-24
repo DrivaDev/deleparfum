@@ -20,6 +20,11 @@
   * {
     box-sizing: border-box;
   }
+
+  ::selection {
+    background: #C9A96E33;
+    color: #1A1A1A;
+  }
 }
 
 @layer components {
@@ -44,11 +49,16 @@
   }
 
   .input-field {
-    @apply w-full border border-gray-200 px-4 py-3 font-sans font-light text-sm text-luxury-charcoal placeholder-luxury-lightgray focus:outline-none focus:border-gold transition-colors duration-200;
+    @apply w-full border border-gray-200 px-4 py-3 font-sans font-light text-sm text-luxury-charcoal placeholder-luxury-lightgray focus:outline-none focus:border-gold transition-colors duration-200 rounded-sm;
   }
 
   .card-hover {
     @apply transition-all duration-500 hover:shadow-xl;
+  }
+
+  /* Luxury card style */
+  .luxury-card {
+    @apply bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300;
   }
 }
 
@@ -112,4 +122,34 @@
 
 .luxury-divider::after {
   background: linear-gradient(to left, transparent, #C9A96E);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* Slide-up for mobile menu */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.25s ease both;
+}
+
+/* Page transition */
+@keyframes pageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+main {
+  animation: pageIn 0.35s ease both;
 }
