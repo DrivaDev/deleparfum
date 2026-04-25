@@ -4,55 +4,100 @@ import {
   BarChart3, Package, ShoppingBag, Plus, Edit2, Trash2, X, Save,
   DollarSign, Tag, Clock, CheckCircle2, Truck, XCircle,
   AlertCircle, ImagePlus, Percent, Hash,
-  ArrowUpRight, ExternalLink, Search,
+  ArrowUpRight, ExternalLink, Search, Menu,
 } from 'lucide-react';
+import Logo from '../components/Logo';
 import { products as initialProducts } from '../data/products';
 import { Product, OlfactoryFamily, Gender, ProductSize } from '../types';
 import { formatPrice } from '../store/cartStore';
 import { useOrdersStore, Order } from '../store/ordersStore';
 
 type Tab = 'dashboard' | 'products' | 'orders' | 'discounts';
-type Granularity = 'hora' | 'dia' | 'semana' | 'mes' | 'trimestre';
+// KPI period — 5 options
+type KpiPeriod = 'hora' | 'dia' | 'semana' | 'mes' | 'trimestre';
+// Chart granularity — 4 options; column type in parentheses
+type ChartGran = 'dia' | 'semana' | 'mes' | 'trimestre';
 
-const GRAN_LABELS: Record<Granularity, string> = {
-  hora: 'Por hora',
+const KPI_LABELS: Record<KpiPeriod, string> = {
+  hora: 'Última hora',
+  dia: 'Hoy',
+  semana: 'Esta semana',
+  mes: 'Este mes',
+  trimestre: 'Este trimestre',
+};
+
+const CHART_LABELS: Record<ChartGran, string> = {
   dia: 'Por día',
   semana: 'Por semana',
   mes: 'Por mes',
   trimestre: 'Por trimestre',
 };
 
-// Build chart buckets from orders
-function buildBuckets(orders: Order[], gran: Granularity): { label: string; revenue: number; count: number }[] {
+function getKpiCutoff(period: KpiPeriod): Date {
+  const now = new Date();
+  if (period === 'hora') { now.setHours(now.getHours() - 1); return now; }
+  if (period === 'dia') { now.setHours(0, 0, 0, 0); return now; }
+  if (period === 'semana') { now.setDate(now.getDate() - 7); return now; }
+  if (period === 'mes') { now.setDate(now.getDate() - 30); return now; }
+  now.setDate(now.getDate() - 91); return now;
+}
+
+// Build chart buckets:
+// dia → last 24h, columns by hour (0–23)
+// semana → last 7 days, columns by day name
+// mes → last 30 days, columns by day of month
+// trimestre → last 13 weeks, columns by week number
+function buildBuckets(orders: Order[], gran: ChartGran): { label: string; revenue: number; count: number }[] {
   const now = new Date();
 
-  const getBucketKey = (dateStr: string): string => {
-    const d = new Date(dateStr);
-    if (gran === 'hora') return `${d.getHours()}:00`;
-    if (gran === 'dia') return ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][d.getDay()];
-    if (gran === 'semana') return `S${Math.ceil(d.getDate() / 7)}`;
-    if (gran === 'mes') return ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][d.getMonth()];
-    // trimestre
-    return `T${Math.ceil((d.getMonth() + 1) / 3)}`;
-  };
+  let bucketKeys: string[];
+  let getKey: (dateStr: string) => string;
+  let cutoff: Date;
 
-  const cutoff = new Date(now);
-  if (gran === 'hora') cutoff.setDate(cutoff.getDate() - 1);
-  else if (gran === 'dia') cutoff.setDate(cutoff.getDate() - 7);
-  else if (gran === 'semana') cutoff.setDate(cutoff.getDate() - 28);
-  else if (gran === 'mes') cutoff.setFullYear(cutoff.getFullYear() - 1);
-  else cutoff.setFullYear(cutoff.getFullYear() - 1);
+  if (gran === 'dia') {
+    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 1);
+    bucketKeys = Array.from({ length: 24 }, (_, i) => `${i}h`);
+    getKey = (d) => `${new Date(d).getHours()}h`;
+  } else if (gran === 'semana') {
+    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 7);
+    const dayNames = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    bucketKeys = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(now); d.setDate(d.getDate() - 6 + i);
+      return dayNames[d.getDay()];
+    });
+    getKey = (d) => dayNames[new Date(d).getDay()];
+  } else if (gran === 'mes') {
+    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 29);
+    bucketKeys = Array.from({ length: 30 }, (_, i) => {
+      const d = new Date(now); d.setDate(d.getDate() - 29 + i);
+      return `${d.getDate()}/${d.getMonth() + 1}`;
+    });
+    getKey = (d) => { const dt = new Date(d); return `${dt.getDate()}/${dt.getMonth() + 1}`; };
+  } else {
+    // trimestre → last 13 weeks
+    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 91);
+    bucketKeys = Array.from({ length: 13 }, (_, i) => `S${i + 1}`);
+    getKey = (d) => {
+      const diff = now.getTime() - new Date(d).getTime();
+      const weeksAgo = Math.floor(diff / (7 * 24 * 3600 * 1000));
+      const idx = 12 - weeksAgo;
+      return idx >= 0 ? `S${idx + 1}` : '';
+    };
+  }
 
-  const map = new Map<string, { revenue: number; count: number }>();
+  const map = new Map<string, { revenue: number; count: number }>(
+    bucketKeys.map(k => [k, { revenue: 0, count: 0 }])
+  );
+
   orders
     .filter(o => o.status !== 'cancelado' && new Date(o.date) >= cutoff)
     .forEach(o => {
-      const key = getBucketKey(o.date);
-      const prev = map.get(key) ?? { revenue: 0, count: 0 };
-      map.set(key, { revenue: prev.revenue + o.total, count: prev.count + 1 });
+      const key = getKey(o.date);
+      const prev = map.get(key);
+      if (prev) map.set(key, { revenue: prev.revenue + o.total, count: prev.count + 1 });
     });
 
-  return Array.from(map.entries()).map(([label, v]) => ({ label, ...v }));
+  return bucketKeys.map(k => ({ label: k, ...(map.get(k) ?? { revenue: 0, count: 0 }) }));
 }
 
 interface DiscountCode {
@@ -139,7 +184,9 @@ function BarChart({ data, valueKey, color }: {
 
 export default function Admin() {
   const [tab, setTab] = useState<Tab>('dashboard');
-  const [gran, setGran] = useState<Granularity>('dia');
+  const [kpiPeriod, setKpiPeriod] = useState<KpiPeriod>('mes');
+  const [chartGran, setChartGran] = useState<ChartGran>('semana');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>(initialProducts);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>(INITIAL_CODES);
   const [editing, setEditing] = useState<Product | null>(null);
@@ -163,9 +210,10 @@ export default function Admin() {
   });
 
   // Dashboard stats
-  const nonCancelled = orders.filter(o => o.status !== 'cancelado');
-  const totalRevenue = nonCancelled.reduce((s, o) => s + o.total, 0);
-  const buckets = buildBuckets(orders, gran);
+  const kpiCutoff = getKpiCutoff(kpiPeriod);
+  const kpiOrders = orders.filter(o => o.status !== 'cancelado' && new Date(o.date) >= kpiCutoff);
+  const totalRevenue = kpiOrders.reduce((s, o) => s + o.total, 0);
+  const buckets = buildBuckets(orders, chartGran);
 
   const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
@@ -174,102 +222,153 @@ export default function Admin() {
     { id: 'discounts', label: 'Descuentos',icon: Tag },
   ];
 
+  const SidebarContent = () => (
+    <>
+      <div className="px-6 py-6 border-b border-white/10">
+        <Logo variant="light" size="sm" />
+        <p className="text-[9px] text-white/30 tracking-[0.25em] uppercase mt-2">Panel Admin</p>
+      </div>
+      <nav className="flex-1 px-3 py-5 space-y-0.5">
+        {navItems.map(item => {
+          const Icon = item.icon;
+          const active = tab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => { setTab(item.id); setSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-xs tracking-wide transition-all duration-150 ${
+                active ? 'bg-[#C9A96E]/15 text-[#C9A96E]' : 'text-white/45 hover:text-white/80 hover:bg-white/5 font-light'
+              }`}
+            >
+              <Icon size={15} strokeWidth={active ? 2 : 1.5} />
+              {item.label}
+            </button>
+          );
+        })}
+      </nav>
+      <div className="px-4 py-5 border-t border-white/10">
+        <Link to="/" className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-white/35 hover:text-white/60 hover:bg-white/5 transition-all">
+          <ExternalLink size={12} strokeWidth={1.5} />
+          Ver sitio
+        </Link>
+      </div>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-[#F8F8F6] flex font-sans">
-      {/* Sidebar */}
-      <aside className="w-60 bg-[#1A1A1A] text-white flex flex-col flex-shrink-0 shadow-xl">
-        <div className="px-6 py-7 border-b border-white/10">
-          <p className="font-serif text-xl text-[#C9A96E] tracking-wide">De Leparfum</p>
-          <p className="text-[10px] text-white/30 tracking-[0.25em] uppercase mt-0.5">Panel Admin</p>
-        </div>
-        <nav className="flex-1 px-3 py-5 space-y-0.5">
-          {navItems.map(item => {
-            const Icon = item.icon;
-            const active = tab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setTab(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-xs tracking-wide transition-all duration-150 ${
-                  active ? 'bg-[#C9A96E]/15 text-[#C9A96E]' : 'text-white/45 hover:text-white/80 hover:bg-white/5 font-light'
-                }`}
-              >
-                <Icon size={15} strokeWidth={active ? 2 : 1.5} />
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-        <div className="px-4 py-5 border-t border-white/10">
-          <Link to="/" className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-white/35 hover:text-white/60 hover:bg-white/5 transition-all">
-            <ExternalLink size={12} strokeWidth={1.5} />
-            Ver sitio
-          </Link>
-        </div>
+      {/* Sidebar — desktop */}
+      <aside className="hidden md:flex w-60 bg-[#1A1A1A] text-white flex-col flex-shrink-0 shadow-xl">
+        <SidebarContent />
       </aside>
 
+      {/* Sidebar — mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+          <aside className="relative w-64 bg-[#1A1A1A] text-white flex flex-col shadow-2xl">
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="absolute top-4 right-4 p-1.5 text-white/40 hover:text-white"
+            >
+              <X size={16} strokeWidth={1.5} />
+            </button>
+            <SidebarContent />
+          </aside>
+        </div>
+      )}
+
       {/* Main */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white border-b border-gray-100 px-8 py-4 flex items-center justify-between flex-shrink-0">
-          <h1 className="font-serif text-xl text-[#1A1A1A]">{navItems.find(n => n.id === tab)?.label}</h1>
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] text-gray-400 font-light">Admin</span>
-            <div className="w-8 h-8 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
-              <span className="text-[11px] text-[#C9A96E] font-medium">A</span>
-            </div>
-          </div>
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+        <header className="bg-white border-b border-gray-100 px-4 sm:px-8 py-4 flex items-center gap-3 flex-shrink-0">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="md:hidden p-2 text-gray-400 hover:text-[#1A1A1A] rounded-lg hover:bg-gray-100 transition-all"
+          >
+            <Menu size={18} strokeWidth={1.5} />
+          </button>
+          <h1 className="font-serif text-lg sm:text-xl text-[#1A1A1A] flex-1">{navItems.find(n => n.id === tab)?.label}</h1>
         </header>
 
-        <main className="flex-1 overflow-auto p-8">
+        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
 
           {/* ── DASHBOARD ── */}
           {tab === 'dashboard' && (
-            <div className="space-y-8">
-              {/* Granularity filter */}
-              <div className="flex items-center gap-2 flex-wrap">
-                {(Object.entries(GRAN_LABELS) as [Granularity, string][]).map(([g, label]) => (
-                  <button
-                    key={g}
-                    onClick={() => setGran(g)}
-                    className={`px-4 py-1.5 rounded-full text-[11px] tracking-wide transition-all ${
-                      gran === g ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
+            <div className="space-y-6">
+              {/* KPI period selector */}
+              <div>
+                <p className="text-[9px] tracking-[0.25em] uppercase text-gray-400 mb-2">Estadísticas</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {(Object.entries(KPI_LABELS) as [KpiPeriod, string][]).map(([p, label]) => (
+                    <button
+                      key={p}
+                      onClick={() => setKpiPeriod(p)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] tracking-wide transition-all ${
+                        kpiPeriod === p ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* 2 KPI + chart cards */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* 2 KPI cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Ingresos */}
-                <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                  <div className="flex items-start justify-between mb-4">
+                <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: '#05966918' }}>
                       <DollarSign size={16} strokeWidth={1.5} style={{ color: '#059669' }} />
                     </div>
                     <ArrowUpRight size={13} className="text-gray-300" />
                   </div>
-                  <p className="font-serif text-3xl text-[#1A1A1A] mb-0.5">{formatPrice(totalRevenue)}</p>
-                  <p className="text-[10px] text-gray-400 font-light mb-1">Ingresos totales</p>
-                  <p className="text-[10px] text-gray-300 font-light">{nonCancelled.length} pedidos confirmados</p>
-                  <BarChart data={buckets} valueKey="revenue" color="#059669" />
+                  <p className="font-serif text-2xl sm:text-3xl text-[#1A1A1A] mb-0.5">{formatPrice(totalRevenue)}</p>
+                  <p className="text-[10px] text-gray-400 font-light mb-0.5">Ingresos · {KPI_LABELS[kpiPeriod].toLowerCase()}</p>
+                  <p className="text-[10px] text-gray-300 font-light">{kpiOrders.length} pedidos confirmados</p>
                 </div>
 
                 {/* Pedidos */}
-                <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                  <div className="flex items-start justify-between mb-4">
+                <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                  <div className="flex items-start justify-between mb-3">
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: '#2563EB18' }}>
                       <ShoppingBag size={16} strokeWidth={1.5} style={{ color: '#2563EB' }} />
                     </div>
                     <ArrowUpRight size={13} className="text-gray-300" />
                   </div>
-                  <p className="font-serif text-3xl text-[#1A1A1A] mb-0.5">{orders.length}</p>
-                  <p className="text-[10px] text-gray-400 font-light mb-1">Pedidos totales</p>
+                  <p className="font-serif text-2xl sm:text-3xl text-[#1A1A1A] mb-0.5">{kpiOrders.length}</p>
+                  <p className="text-[10px] text-gray-400 font-light mb-0.5">Pedidos · {KPI_LABELS[kpiPeriod].toLowerCase()}</p>
                   <p className="text-[10px] text-gray-300 font-light">
-                    {orders.filter(o => o.status === 'procesando' || o.status === 'en_camino').length} activos
+                    {orders.filter(o => o.status === 'procesando' || o.status === 'en_camino').length} activos en total
                   </p>
-                  <BarChart data={buckets} valueKey="count" color="#2563EB" />
+                </div>
+              </div>
+
+              {/* Chart period selector + charts */}
+              <div>
+                <p className="text-[9px] tracking-[0.25em] uppercase text-gray-400 mb-2">Gráficos</p>
+                <div className="flex items-center gap-2 flex-wrap mb-4">
+                  {(Object.entries(CHART_LABELS) as [ChartGran, string][]).map(([g, label]) => (
+                    <button
+                      key={g}
+                      onClick={() => setChartGran(g)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] tracking-wide transition-all ${
+                        chartGran === g ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                    <p className="text-[10px] text-gray-400 font-light mb-1">Ingresos</p>
+                    <BarChart data={buckets} valueKey="revenue" color="#059669" />
+                  </div>
+                  <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                    <p className="text-[10px] text-gray-400 font-light mb-1">Pedidos</p>
+                    <BarChart data={buckets} valueKey="count" color="#2563EB" />
+                  </div>
                 </div>
               </div>
 

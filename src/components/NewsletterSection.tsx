@@ -31,7 +31,7 @@ export default function NewsletterSection() {
             <div className="w-14 h-14 bg-gold rounded-full flex items-center justify-center">
               <Check size={24} className="text-luxury-black" strokeWidth={2} />
             </div>
-            <p className="font-serif text-xl text-luxury-black">¡Bienvenido/a al universo ÉLIXIR!</p>
+            <p className="font-serif text-xl text-luxury-black">¡Bienvenido/a al universo De Leparfum!</p>
             <p className="font-sans font-light text-sm text-luxury-lightgray">
               Pronto recibirás contenido exclusivo en {email}
             </p>

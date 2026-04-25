@@ -159,7 +159,7 @@ export default function Cart() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="ÉLIXIR20"
+                    placeholder="BIENVENIDA20"
                     className="input-field text-xs py-2 flex-1"
                   />
                   <button className="px-4 border border-gray-200 font-sans font-light text-xs text-luxury-gray hover:border-gold transition-colors">

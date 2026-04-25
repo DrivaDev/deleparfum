@@ -47,7 +47,7 @@ export default function Home() {
         <div className="bg-luxury-black flex items-center justify-center px-10 md:px-16 py-20">
           <div className="max-w-sm">
             <p className="font-sans font-light text-[9px] tracking-[0.5em] uppercase text-gold mb-6">
-              Filosofía ÉLIXIR
+              De Leparfum
             </p>
             <blockquote className="font-serif text-3xl md:text-4xl text-white leading-tight mb-6">
               "Un perfume es la última y más perfecta expresión de la memoria"
@@ -102,7 +102,7 @@ export default function Home() {
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-white mb-4 leading-tight">
             Viví la experiencia<br />
-            <em className="not-italic text-gold">ÉLIXIR</em>
+            <em className="not-italic text-gold">De Leparfum</em>
           </h2>
           <p className="font-sans font-light text-sm text-white/50 max-w-md mx-auto mb-10 leading-relaxed">
             Descubrí nuevas fragancias, looks del día y contenido exclusivo en nuestras redes.

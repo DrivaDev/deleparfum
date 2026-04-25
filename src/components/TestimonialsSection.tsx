@@ -12,7 +12,7 @@ const testimonials = [
     name: 'Sebastián R.',
     location: 'Rosario',
     rating: 5,
-    text: 'Oud Royal es el perfume más sofisticado que he usado. La atención al detalle de ÉLIXIR es impecable.',
+    text: 'Oud Royal es el perfume más sofisticado que he usado. La atención al detalle de De Leparfum es impecable.',
     product: 'Oud Royal',
   },
   {

@@ -43,10 +43,6 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-            <div className="flex gap-3 mt-2">
-              <p className="font-sans font-light text-[10px] text-white/30">@deleparfum</p>
-              <p className="font-sans font-light text-[10px] text-white/30">@deleparfum_</p>
-            </div>
           </div>
 
           {/* Links column */}

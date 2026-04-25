@@ -69,7 +69,7 @@ export default function Catalog() {
       {/* Page header */}
       <div className="bg-cream py-12 md:py-16 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="section-subtitle mb-3">ÉLIXIR</p>
+          <p className="section-subtitle mb-3">De Leparfum</p>
           <h1 className="section-title">{pageTitle}</h1>
           <p className="font-sans font-light text-sm text-luxury-gray mt-3">
             {filtered.length} fragancia{filtered.length !== 1 ? 's' : ''} encontrada{filtered.length !== 1 ? 's' : ''}
