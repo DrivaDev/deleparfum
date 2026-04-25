@@ -44,9 +44,9 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Left nav links — desktop */}
-            <nav className="hidden md:flex items-center gap-8 flex-1">
+          {/* Desktop layout */}
+          <div className="hidden md:flex items-center justify-between h-20">
+            <nav className="flex items-center gap-8 flex-1">
               {navLinks.slice(0, 2).map(link => (
                 <Link
                   key={link.path}
@@ -62,17 +62,11 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* Logo center */}
             <Link to="/" className="flex-shrink-0 mx-4">
-              <Logo
-                variant={isTransparent ? 'light' : 'dark'}
-                size="lg"
-                showTagline={true}
-              />
+              <Logo variant={isTransparent ? 'light' : 'dark'} size="lg" />
             </Link>
 
-            {/* Right nav links + icons — desktop */}
-            <div className="hidden md:flex items-center gap-8 flex-1 justify-end">
+            <div className="flex items-center gap-8 flex-1 justify-end">
               {navLinks.slice(2).map(link => (
                 <Link
                   key={link.path}
@@ -110,9 +104,20 @@ export default function Navbar() {
                 )}
               </button>
             </div>
+          </div>
 
-            {/* Mobile icons */}
-            <div className="flex md:hidden items-center gap-4">
+          {/* Mobile layout — 3 columns: spacer | logo | icons */}
+          <div className="flex md:hidden items-center h-16">
+            {/* Left spacer — same width as right icons to keep logo truly centered */}
+            <div className="flex-1" />
+
+            {/* Logo — centered */}
+            <Link to="/" className="flex-shrink-0">
+              <Logo variant={isTransparent ? 'light' : 'dark'} size="md" compact />
+            </Link>
+
+            {/* Right icons */}
+            <div className="flex-1 flex items-center justify-end gap-4">
               <button
                 onClick={() => setSearchOpen(true)}
                 aria-label="Buscar"
