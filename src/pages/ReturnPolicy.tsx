@@ -80,7 +80,7 @@ export default function ReturnPolicy() {
           <h2 className="font-serif text-xl text-luxury-black mb-8">¿Cómo solicitar una devolución?</h2>
           <ol className="space-y-6">
             {[
-              { n: '01', title: 'Contactanos', desc: 'Enviá un email a devoluciones@elixirparfum.com con tu número de pedido y el motivo de la devolución.' },
+              { n: '01', title: 'Contactanos', desc: 'Enviá un email a devoluciones@deleparfum.com con tu número de pedido y el motivo de la devolución.' },
               { n: '02', title: 'Aprobación', desc: 'Nuestro equipo revisará tu solicitud y te responderá dentro de las 24 horas hábiles con las instrucciones de envío.' },
               { n: '03', title: 'Envío del producto', desc: 'Embalá el producto en su caja original y envialo a nuestra dirección. El costo de envío corre por tu cuenta, salvo productos defectuosos.' },
               { n: '04', title: 'Reembolso o cambio', desc: 'Una vez recibido e inspeccionado el producto (2–3 días hábiles), procesaremos tu reembolso o envío de cambio. El crédito aparecerá en tu cuenta en 5–7 días hábiles.' },
@@ -106,10 +106,10 @@ export default function ReturnPolicy() {
             Nuestro equipo de atención está disponible de lunes a viernes de 10 a 18 hs.
           </p>
           <a
-            href="mailto:devoluciones@elixirparfum.com"
+            href="mailto:devoluciones@deleparfum.com"
             className="btn-primary inline-block"
           >
-            devoluciones@elixirparfum.com
+            devoluciones@deleparfum.com
           </a>
           <p className="mt-6">
             <Link to="/catalogo" className="font-sans font-light text-xs text-luxury-lightgray hover:text-luxury-black transition-colors underline underline-offset-4">

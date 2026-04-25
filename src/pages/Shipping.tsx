@@ -107,7 +107,7 @@ export default function Shipping() {
             <ol className="space-y-6">
               {[
                 { n: '01', title: 'Confirmás tu pedido', desc: 'Completás el checkout y recibís un email de confirmación con el detalle de tu compra.' },
-                { n: '02', title: 'Preparamos tu pedido', desc: 'Nuestro equipo selecciona y embala cada fragancia con el packaging exclusivo de ÉLIXIR en 1–2 días hábiles.' },
+                { n: '02', title: 'Preparamos tu pedido', desc: 'Nuestro equipo selecciona y embala cada fragancia con el packaging exclusivo de De Leparfum en 1–2 días hábiles.' },
                 { n: '03', title: 'Despacho', desc: 'El paquete es entregado a la empresa de transporte y recibís el número de seguimiento por email.' },
                 { n: '04', title: 'Entrega', desc: 'El envío llega a tu puerta. Si no estás, el correo deja aviso o lo retiras en la sucursal más cercana.' },
               ].map(step => (

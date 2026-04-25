@@ -27,7 +27,7 @@ export default function Logo({ variant = 'dark', size = 'md', compact = false }:
 
   return (
     <img
-      src={compact ? '/Logo2.svg' : '/Logo1.svg'}
+      src={compact ? '/logo2.svg' : '/logo1.svg'}
       alt="De Le Parfum"
       className={`${h} w-auto object-contain select-none`}
       style={filter ? { filter } : undefined}
