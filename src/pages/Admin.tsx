@@ -67,12 +67,15 @@ function buildBuckets(orders: Order[], gran: ChartGran): { label: string; revenu
     });
     getKey = (d) => dayNames[new Date(d).getDay()];
   } else if (gran === 'mes') {
-    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 29);
-    bucketKeys = Array.from({ length: 30 }, (_, i) => {
-      const d = new Date(now); d.setDate(d.getDate() - 29 + i);
-      return `${d.getDate()}/${d.getMonth() + 1}`;
-    });
-    getKey = (d) => { const dt = new Date(d); return `${dt.getDate()}/${dt.getMonth() + 1}`; };
+    // last 4 weeks, grouped by week
+    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 28);
+    bucketKeys = ['S1', 'S2', 'S3', 'S4'];
+    getKey = (d) => {
+      const diff = now.getTime() - new Date(d).getTime();
+      const weeksAgo = Math.floor(diff / (7 * 24 * 3600 * 1000));
+      const idx = 3 - weeksAgo;
+      return idx >= 0 ? `S${idx + 1}` : '';
+    };
   } else {
     // trimestre → last 13 weeks
     cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 91);

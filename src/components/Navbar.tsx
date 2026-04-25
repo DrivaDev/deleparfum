@@ -66,7 +66,7 @@ export default function Navbar() {
             <Link to="/" className="flex-shrink-0 mx-4">
               <Logo
                 variant={isTransparent ? 'light' : 'dark'}
-                size="md"
+                size="lg"
                 showTagline={true}
               />
             </Link>

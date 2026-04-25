@@ -30,7 +30,7 @@ export default function Logo({ variant = 'dark', size = 'md', compact = false }:
       src={compact ? '/logo2.svg' : '/logo1.svg'}
       alt="De Le Parfum"
       className={`${h} w-auto object-contain select-none`}
-      style={filter ? { filter } : undefined}
+      style={filter ? { filter, transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' } : { transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}
       draggable={false}
     />
   );

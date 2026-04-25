@@ -19,7 +19,7 @@ function buildWhatsAppMessage(
     '✨ *NUEVO PEDIDO - De Leparfum* ✨',
     sep,
     '',
-    `🔖 *Pedido:* ${orderNumber}`,
+    `*Pedido:* ${orderNumber}`,
     '',
     '👤 *Cliente*',
     `   ${form.firstName} ${form.lastName}`,
