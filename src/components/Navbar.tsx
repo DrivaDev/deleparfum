@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-luxury-charcoal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Desktop layout */}
           <div className="hidden md:flex items-center justify-between h-32">
@@ -34,8 +34,8 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`font-sans font-light text-xs tracking-widest uppercase transition-colors duration-200 text-luxury-gray hover:text-luxury-black ${
-                    location.pathname === link.path ? 'text-luxury-black' : ''
+                  className={`font-sans font-light text-xs tracking-widest uppercase transition-colors duration-200 text-white/70 hover:text-white ${
+                    location.pathname === link.path ? 'text-white' : ''
                   }`}
                 >
                   {link.label}
@@ -44,7 +44,7 @@ export default function Navbar() {
             </nav>
 
             <Link to="/" className="flex-shrink-0 mx-4">
-              <Logo variant="dark" size="xl" />
+              <Logo variant="light" size="xl" />
             </Link>
 
             <div className="flex items-center gap-8 flex-1 justify-end">
@@ -52,7 +52,7 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="font-sans font-light text-xs tracking-widest uppercase transition-colors duration-200 text-luxury-gray hover:text-luxury-black"
+                  className="font-sans font-light text-xs tracking-widest uppercase transition-colors duration-200 text-white/70 hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -60,14 +60,14 @@ export default function Navbar() {
               <button
                 onClick={() => setSearchOpen(true)}
                 aria-label="Buscar"
-                className="text-luxury-gray hover:text-luxury-black transition-colors"
+                className="text-white/70 hover:text-white transition-colors"
               >
                 <Search size={18} strokeWidth={1.5} />
               </button>
               <button
                 onClick={openCart}
                 aria-label={`Carrito (${totalItems} items)`}
-                className="relative text-luxury-gray hover:text-luxury-black transition-colors"
+                className="relative text-white/70 hover:text-white transition-colors"
               >
                 <ShoppingBag size={18} strokeWidth={1.5} />
                 {totalItems > 0 && (
@@ -84,22 +84,14 @@ export default function Navbar() {
             <div className="flex-1" />
 
             <Link to="/" className="flex-shrink-0">
-              <Logo variant="dark" size="lg" compact />
+              <Logo variant="light" size="lg" compact />
             </Link>
 
             <div className="flex-1 flex items-center justify-end gap-4">
-              <button
-                onClick={() => setSearchOpen(true)}
-                aria-label="Buscar"
-                className="text-luxury-gray"
-              >
+              <button onClick={() => setSearchOpen(true)} aria-label="Buscar" className="text-white/70">
                 <Search size={18} strokeWidth={1.5} />
               </button>
-              <button
-                onClick={openCart}
-                aria-label="Carrito"
-                className="relative text-luxury-gray"
-              >
+              <button onClick={openCart} aria-label="Carrito" className="relative text-white/70">
                 <ShoppingBag size={18} strokeWidth={1.5} />
                 {totalItems > 0 && (
                   <span className="absolute -top-2 -right-2 bg-gold text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -107,11 +99,7 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label="Menú"
-                className="text-luxury-gray"
-              >
+              <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menú" className="text-white/70">
                 {mobileOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
               </button>
             </div>
@@ -120,13 +108,13 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100 animate-slide-up">
+          <div className="md:hidden bg-luxury-charcoal border-t border-white/10 animate-slide-up">
             <nav className="flex flex-col py-4">
               {navLinks.map(link => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="px-6 py-3 font-sans font-light text-xs tracking-widest uppercase text-luxury-gray hover:text-luxury-black hover:bg-cream transition-colors"
+                  className="px-6 py-3 font-sans font-light text-xs tracking-widest uppercase text-white/60 hover:text-white hover:bg-white/5 transition-colors"
                 >
                   {link.label}
                 </Link>

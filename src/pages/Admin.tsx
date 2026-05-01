@@ -10,13 +10,11 @@ import Logo from '../components/Logo';
 import { products as initialProducts } from '../data/products';
 import { Product, OlfactoryFamily, Gender, ProductSize } from '../types';
 import { formatPrice } from '../store/cartStore';
-import { useOrdersStore, Order } from '../store/ordersStore';
+import { useOrdersStore } from '../store/ordersStore';
 
 type Tab = 'dashboard' | 'products' | 'orders' | 'discounts';
 // KPI period — 5 options
 type KpiPeriod = 'hora' | 'dia' | 'semana' | 'mes' | 'trimestre';
-// Chart granularity — 4 options; column type in parentheses
-type ChartGran = 'dia' | 'semana' | 'mes' | 'trimestre';
 
 const KPI_LABELS: Record<KpiPeriod, string> = {
   hora: 'Última hora',
@@ -26,12 +24,6 @@ const KPI_LABELS: Record<KpiPeriod, string> = {
   trimestre: 'Este trimestre',
 };
 
-const CHART_LABELS: Record<ChartGran, string> = {
-  dia: 'Por día',
-  semana: 'Por semana',
-  mes: 'Por mes',
-  trimestre: 'Por trimestre',
-};
 
 function getKpiCutoff(period: KpiPeriod): Date {
   const now = new Date();
@@ -42,66 +34,6 @@ function getKpiCutoff(period: KpiPeriod): Date {
   now.setDate(now.getDate() - 91); return now;
 }
 
-// Build chart buckets:
-// dia → last 24h, columns by hour (0–23)
-// semana → last 7 days, columns by day name
-// mes → last 30 days, columns by day of month
-// trimestre → last 13 weeks, columns by week number
-function buildBuckets(orders: Order[], gran: ChartGran): { label: string; revenue: number; count: number }[] {
-  const now = new Date();
-
-  let bucketKeys: string[];
-  let getKey: (dateStr: string) => string;
-  let cutoff: Date;
-
-  if (gran === 'dia') {
-    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 1);
-    bucketKeys = Array.from({ length: 24 }, (_, i) => `${i}h`);
-    getKey = (d) => `${new Date(d).getHours()}h`;
-  } else if (gran === 'semana') {
-    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 7);
-    const dayNames = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    bucketKeys = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(now); d.setDate(d.getDate() - 6 + i);
-      return dayNames[d.getDay()];
-    });
-    getKey = (d) => dayNames[new Date(d).getDay()];
-  } else if (gran === 'mes') {
-    // last 4 weeks, grouped by week
-    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 28);
-    bucketKeys = ['S1', 'S2', 'S3', 'S4'];
-    getKey = (d) => {
-      const diff = now.getTime() - new Date(d).getTime();
-      const weeksAgo = Math.floor(diff / (7 * 24 * 3600 * 1000));
-      const idx = 3 - weeksAgo;
-      return idx >= 0 ? `S${idx + 1}` : '';
-    };
-  } else {
-    // trimestre → last 13 weeks
-    cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - 91);
-    bucketKeys = Array.from({ length: 13 }, (_, i) => `S${i + 1}`);
-    getKey = (d) => {
-      const diff = now.getTime() - new Date(d).getTime();
-      const weeksAgo = Math.floor(diff / (7 * 24 * 3600 * 1000));
-      const idx = 12 - weeksAgo;
-      return idx >= 0 ? `S${idx + 1}` : '';
-    };
-  }
-
-  const map = new Map<string, { revenue: number; count: number }>(
-    bucketKeys.map(k => [k, { revenue: 0, count: 0 }])
-  );
-
-  orders
-    .filter(o => o.status !== 'cancelado' && new Date(o.date) >= cutoff)
-    .forEach(o => {
-      const key = getKey(o.date);
-      const prev = map.get(key);
-      if (prev) map.set(key, { revenue: prev.revenue + o.total, count: prev.count + 1 });
-    });
-
-  return bucketKeys.map(k => ({ label: k, ...(map.get(k) ?? { revenue: 0, count: 0 }) }));
-}
 
 interface DiscountCode {
   id: string;
@@ -140,55 +72,10 @@ const blankProduct = (): Omit<Product, 'id'> => ({
   inStock: true, isNew: false, isFeatured: false, tags: [],
 });
 
-// Simple SVG bar chart
-function BarChart({ data, valueKey, color }: {
-  data: { label: string; revenue: number; count: number }[];
-  valueKey: 'revenue' | 'count';
-  color: string;
-}) {
-  if (data.length === 0) {
-    return <div className="h-24 flex items-center justify-center text-[10px] text-gray-300">Sin datos en este período</div>;
-  }
-  const values = data.map(d => d[valueKey]);
-  const max = Math.max(...values, 1);
-  const w = 100 / data.length;
-
-  return (
-    <div className="pt-2">
-      <svg viewBox={`0 0 100 30`} className="w-full h-20" preserveAspectRatio="none">
-        {data.map((d, i) => {
-          const h = (d[valueKey] / max) * 24;
-          const x = i * w + w * 0.1;
-          const barW = w * 0.8;
-          return (
-            <rect
-              key={i}
-              x={x}
-              y={24 - h}
-              width={barW}
-              height={h}
-              fill={color}
-              opacity="0.8"
-              rx="0.5"
-            />
-          );
-        })}
-      </svg>
-      <div className="flex" style={{ gap: 0 }}>
-        {data.map((d, i) => (
-          <div key={i} className="text-center flex-1">
-            <span className="text-[8px] text-gray-400">{d.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function Admin() {
   const [tab, setTab] = useState<Tab>('dashboard');
   const [kpiPeriod, setKpiPeriod] = useState<KpiPeriod>('mes');
-  const [chartGran, setChartGran] = useState<ChartGran>('semana');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [productList, setProductList] = useState<Product[]>(initialProducts);
   const [discountCodes, setDiscountCodes] = useState<DiscountCode[]>(INITIAL_CODES);
@@ -216,7 +103,6 @@ export default function Admin() {
   const kpiCutoff = getKpiCutoff(kpiPeriod);
   const kpiOrders = orders.filter(o => o.status !== 'cancelado' && new Date(o.date) >= kpiCutoff);
   const totalRevenue = kpiOrders.reduce((s, o) => s + o.total, 0);
-  const buckets = buildBuckets(orders, chartGran);
 
   const navItems: { id: Tab; label: string; icon: React.ElementType }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
@@ -261,7 +147,7 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-[#F8F8F6] flex font-sans">
       {/* Sidebar — desktop */}
-      <aside className="hidden md:flex w-60 bg-[#1A1A1A] text-white flex-col flex-shrink-0 shadow-xl">
+      <aside className="hidden md:flex w-60 bg-luxury-charcoal text-white flex-col flex-shrink-0 shadow-xl">
         <SidebarContent />
       </aside>
 
@@ -269,7 +155,7 @@ export default function Admin() {
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <aside className="relative w-64 bg-[#1A1A1A] text-white flex flex-col shadow-2xl">
+          <aside className="relative w-64 bg-luxury-charcoal text-white flex flex-col shadow-2xl">
             <button
               onClick={() => setSidebarOpen(false)}
               className="absolute top-4 right-4 p-1.5 text-white/40 hover:text-white"
@@ -307,7 +193,7 @@ export default function Admin() {
                       key={p}
                       onClick={() => setKpiPeriod(p)}
                       className={`px-3 py-1.5 rounded-full text-[11px] tracking-wide transition-all ${
-                        kpiPeriod === p ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
+                        kpiPeriod === p ? 'bg-luxury-charcoal text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
                       }`}
                     >
                       {label}
@@ -344,34 +230,6 @@ export default function Admin() {
                   <p className="text-[10px] text-gray-300 font-light">
                     {orders.filter(o => o.status === 'procesando' || o.status === 'en_camino').length} activos en total
                   </p>
-                </div>
-              </div>
-
-              {/* Chart period selector + charts */}
-              <div>
-                <p className="text-[9px] tracking-[0.25em] uppercase text-gray-400 mb-2">Gráficos</p>
-                <div className="flex items-center gap-2 flex-wrap mb-4">
-                  {(Object.entries(CHART_LABELS) as [ChartGran, string][]).map(([g, label]) => (
-                    <button
-                      key={g}
-                      onClick={() => setChartGran(g)}
-                      className={`px-3 py-1.5 rounded-full text-[11px] tracking-wide transition-all ${
-                        chartGran === g ? 'bg-[#1A1A1A] text-white' : 'bg-white border border-gray-200 text-gray-500 hover:border-gray-400'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
-                    <p className="text-[10px] text-gray-400 font-light mb-1">Ingresos</p>
-                    <BarChart data={buckets} valueKey="revenue" color="#059669" />
-                  </div>
-                  <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
-                    <p className="text-[10px] text-gray-400 font-light mb-1">Pedidos</p>
-                    <BarChart data={buckets} valueKey="count" color="#2563EB" />
-                  </div>
                 </div>
               </div>
 
@@ -415,7 +273,7 @@ export default function Admin() {
                 <p className="text-sm text-gray-400 font-light">{productList.length} productos</p>
                 <button
                   onClick={() => { setEditing({ id: String(Date.now()), ...blankProduct() }); setIsNew(true); }}
-                  className="flex items-center gap-2 bg-[#1A1A1A] text-white text-[11px] px-4 py-2.5 rounded-lg hover:bg-[#333] transition-colors"
+                  className="flex items-center gap-2 bg-luxury-charcoal text-white text-[11px] px-4 py-2.5 rounded-lg hover:bg-[#333] transition-colors"
                 >
                   <Plus size={13} strokeWidth={2} />
                   Nuevo producto
@@ -607,7 +465,7 @@ export default function Admin() {
                 <p className="text-sm text-gray-400 font-light">{discountCodes.length} códigos</p>
                 <button
                   onClick={() => setNewCodeOpen(true)}
-                  className="flex items-center gap-2 bg-[#1A1A1A] text-white text-[11px] px-4 py-2.5 rounded-lg hover:bg-[#333] transition-colors"
+                  className="flex items-center gap-2 bg-luxury-charcoal text-white text-[11px] px-4 py-2.5 rounded-lg hover:bg-[#333] transition-colors"
                 >
                   <Plus size={13} strokeWidth={2} />
                   Nuevo código
@@ -844,7 +702,7 @@ function ProductModal({ product, isNew, onSave, onClose }: {
         </div>
         <div className="flex justify-end gap-3 px-7 py-5 border-t border-gray-100 bg-gray-50/50">
           <button onClick={onClose} className="px-5 py-2.5 text-xs border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">Cancelar</button>
-          <button onClick={() => { if (form.name && form.brand) onSave(form); }} className="flex items-center gap-2 px-5 py-2.5 text-xs bg-[#1A1A1A] text-white rounded-lg hover:bg-[#333] transition-colors">
+          <button onClick={() => { if (form.name && form.brand) onSave(form); }} className="flex items-center gap-2 px-5 py-2.5 text-xs bg-luxury-charcoal text-white rounded-lg hover:bg-[#333] transition-colors">
             <Save size={13} strokeWidth={1.5} />Guardar
           </button>
         </div>
@@ -885,7 +743,7 @@ function NewCodeModal({ onSave, onClose }: { onSave: (c: Omit<DiscountCode, 'id'
         </div>
         <div className="flex justify-end gap-3 px-7 py-5 border-t border-gray-100 bg-gray-50/50">
           <button onClick={onClose} className="px-5 py-2.5 text-xs border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">Cancelar</button>
-          <button onClick={() => { if (form.code && form.expiry) onSave(form); }} className="flex items-center gap-2 px-5 py-2.5 text-xs bg-[#1A1A1A] text-white rounded-lg hover:bg-[#333] transition-colors">
+          <button onClick={() => { if (form.code && form.expiry) onSave(form); }} className="flex items-center gap-2 px-5 py-2.5 text-xs bg-luxury-charcoal text-white rounded-lg hover:bg-[#333] transition-colors">
             <Tag size={13} strokeWidth={1.5} />Crear código
           </button>
         </div>
