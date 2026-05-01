@@ -26,7 +26,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-20 md:py-28 bg-luxury-black">
+    <section className="py-20 md:py-28 bg-luxury-charcoal">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <p className="font-sans font-light text-[10px] tracking-[0.4em] uppercase text-gold mb-3">
@@ -39,9 +39,10 @@ export default function TestimonialsSection() {
           {testimonials.map((t, i) => (
             <blockquote
               key={i}
-              className="relative bg-luxury-charcoal p-8 border border-white/5 hover:border-gold/20 transition-colors duration-300"
+              className="relative p-8 border border-gold/20 hover:border-gold/40 transition-colors duration-300"
+              style={{ backgroundColor: '#fdf4f8' }}
             >
-              <Quote size={32} className="text-gold/20 mb-4" strokeWidth={1} />
+              <Quote size={32} className="text-gold/30 mb-4" strokeWidth={1} />
 
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, j) => (
@@ -49,12 +50,12 @@ export default function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="font-sans font-light text-sm text-white/70 leading-relaxed mb-6 italic">
+              <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed mb-6 italic">
                 "{t.text}"
               </p>
 
-              <div className="border-t border-white/10 pt-5">
-                <p className="font-serif text-sm text-white">{t.name}</p>
+              <div className="border-t border-gray-200 pt-5">
+                <p className="font-serif text-sm text-luxury-black">{t.name}</p>
                 <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mt-1">
                   {t.location} · <span className="text-gold">{t.product}</span>
                 </p>
