@@ -1,42 +1,47 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen min-h-[700px] flex items-end overflow-hidden">
+    <section className="relative overflow-hidden bg-luxury-charcoal" style={{ minHeight: '520px' }}>
+      {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1600&q=80')`,
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/40 to-luxury-black/10" />
+        <div className="absolute inset-0 bg-luxury-black/60" />
       </div>
 
-      <div className="relative z-10 w-full pb-16 md:pb-24 px-6 sm:px-10 lg:px-16 max-w-7xl mx-auto">
-        <div className="max-w-2xl">
-          <p className="font-sans font-light text-[10px] tracking-[0.5em] uppercase text-gold mb-5">
-            Panas · Telas · Cuerinas
-          </p>
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 flex flex-col items-center text-center">
+        <p className="font-sans font-light text-xs tracking-[0.35em] uppercase text-gold mb-4">
+          Panas · Telas · Cuerinas
+        </p>
 
-          <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl text-white leading-[0.9] mb-7">
-            Telas<br />
-            <em className="not-italic text-gold">Web 2026</em>
-          </h1>
+        <h1 className="font-serif text-4xl md:text-6xl text-white leading-tight mb-5 max-w-2xl">
+          Las mejores telas para tapicería y decoración
+        </h1>
 
-          <p className="font-sans font-light text-sm text-white/60 max-w-sm mb-10 leading-loose">
-            Las mejores telas para tapicería y decoración. Calidad premium, precios directos y envío a todo el país.
-          </p>
+        <p className="font-sans font-light text-sm text-white/70 max-w-lg mb-8 leading-relaxed">
+          Más de 100 colores disponibles. Calidad premium, precios directos y envío gratis a todo el país.
+        </p>
 
-          <div className="flex items-center gap-6">
-            <Link
-              to="/catalogo"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-gold text-white font-sans font-light tracking-widest uppercase text-xs transition-all duration-300 hover:bg-gold-dark"
-            >
-              Ver catálogo
-              <ArrowRight size={14} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <Link
+            to="/catalogo"
+            className="px-8 py-3 bg-gold text-white font-sans font-light text-sm tracking-widest uppercase hover:bg-gold-dark transition-colors"
+          >
+            Ver catálogo
+          </Link>
+          <a
+            href="https://wa.me/5491179047144"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-3 border border-white/40 text-white font-sans font-light text-sm tracking-widest uppercase hover:border-white hover:bg-white/10 transition-colors"
+          >
+            Consultar por WhatsApp
+          </a>
         </div>
       </div>
     </section>
