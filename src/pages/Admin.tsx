@@ -443,7 +443,7 @@ export default function Admin() {
                           <td className="px-5 py-4">
                             <button
                               onClick={() => setDeleteOrderId(o.id)}
-                              className="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                              className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                               aria-label="Eliminar pedido"
                             >
                               <Trash2 size={13} strokeWidth={1.5} />

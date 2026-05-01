@@ -1,9 +1,9 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Truck, RotateCcw, ShieldCheck, MessageCircle } from 'lucide-react';
+import { Truck, RotateCcw, ShieldCheck, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import FeaturedProducts from '../components/FeaturedProducts';
 import TestimonialsSection from '../components/TestimonialsSection';
-
 
 const categories = [
   {
@@ -32,6 +32,69 @@ const benefits = [
   { icon: ShieldCheck, title: 'Calidad garantizada', desc: 'Todos nuestros productos son verificados.' },
   { icon: MessageCircle, title: 'Atención por WhatsApp', desc: 'Respondemos rápido, todos los días.' },
 ];
+
+const carouselImages = [
+  { src: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200&q=80', alt: 'Tela pana' },
+  { src: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1200&q=80', alt: 'Tela decorativa' },
+  { src: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80', alt: 'Cuero sintético' },
+  { src: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80', alt: 'Tapicería' },
+  { src: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1200&q=80', alt: 'Telas interiores' },
+];
+
+function FabricCarousel() {
+  const [current, setCurrent] = useState(0);
+
+  const prev = useCallback(() => setCurrent(c => (c - 1 + carouselImages.length) % carouselImages.length), []);
+  const next = useCallback(() => setCurrent(c => (c + 1) % carouselImages.length), []);
+
+  useEffect(() => {
+    const id = setInterval(next, 4000);
+    return () => clearInterval(id);
+  }, [next]);
+
+  return (
+    <section className="relative overflow-hidden bg-luxury-black" style={{ height: '420px' }}>
+      {carouselImages.map((img, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 transition-opacity duration-700"
+          style={{ opacity: i === current ? 1 : 0 }}
+        >
+          <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-luxury-black/30" />
+        </div>
+      ))}
+
+      {/* Arrows */}
+      <button
+        onClick={prev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+        aria-label="Anterior"
+      >
+        <ChevronLeft size={20} strokeWidth={1.5} />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+        aria-label="Siguiente"
+      >
+        <ChevronRight size={20} strokeWidth={1.5} />
+      </button>
+
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+        {carouselImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-white w-6' : 'bg-white/40'}`}
+            aria-label={`Imagen ${i + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   return (
@@ -64,7 +127,8 @@ export default function Home() {
               <Link
                 key={cat.name}
                 to={`/catalogo?categoria=${cat.filter}`}
-                className="group relative overflow-hidden bg-white border border-gray-200 hover:border-gold transition-colors"
+                className="group relative overflow-hidden border border-gray-200 hover:border-gold transition-colors"
+                style={{ backgroundColor: '#fdf4f8' }}
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
@@ -85,8 +149,6 @@ export default function Home() {
       </section>
 
       <FeaturedProducts />
-
-      <TestimonialsSection />
 
       {/* WhatsApp CTA */}
       <section className="py-14 md:py-20 bg-luxury-charcoal text-white">
@@ -110,6 +172,9 @@ export default function Home() {
         </div>
       </section>
 
+      <FabricCarousel />
+
+      <TestimonialsSection />
     </main>
   );
 }
