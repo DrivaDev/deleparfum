@@ -2,19 +2,9 @@ import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-luxury-charcoal" style={{ minHeight: '520px' }}>
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1600&q=80')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-luxury-black/60" />
-      </div>
-
+    <section className="bg-luxury-charcoal" style={{ minHeight: '520px' }}>
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 flex flex-col items-center text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36 flex flex-col items-center text-center">
         <p className="font-sans font-light text-xs tracking-[0.35em] uppercase text-gold mb-4">
           Panas · Telas · Cuerinas
         </p>
