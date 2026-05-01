@@ -2,25 +2,25 @@ import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    name: 'Valentina M.',
+    name: 'Martina G.',
     location: 'Buenos Aires',
     rating: 5,
-    text: 'Minuit Éternel cambió mi relación con los perfumes. Es imposible describirlo con palabras; hay que vivirlo en la piel.',
-    product: 'Minuit Éternel',
+    text: 'La calidad de la Pana Murano es increíble. La relación calidad-precio es muy buena y el envío llegó rápido y bien embalado.',
+    product: 'PANA MURANO',
   },
   {
-    name: 'Sebastián R.',
-    location: 'Rosario',
-    rating: 5,
-    text: 'Oud Royal es el perfume más sofisticado que he usado. La atención al detalle de De Leparfum es impecable.',
-    product: 'Oud Royal',
-  },
-  {
-    name: 'Luciana P.',
+    name: 'Carlos T.',
     location: 'Córdoba',
     rating: 5,
-    text: 'Rose Impériale es exactamente lo que estaba buscando: una rosa real, sin artificios. Llegó perfectamente empaquetado.',
-    product: 'Rose Impériale',
+    text: 'Usé THOR para retapizar mi living y quedó espectacular. La tela es muy resistente y los colores son exactamente iguales a las fotos.',
+    product: 'THOR',
+  },
+  {
+    name: 'Alejandra R.',
+    location: 'Rosario',
+    rating: 5,
+    text: 'Compré CUEROTEX para las sillas del comedor. Facilísima de limpiar y se ve de lujo. Recomiendo 100% Telas Web 2026.',
+    product: 'CUEROTEX',
   },
 ];
 
@@ -41,11 +41,7 @@ export default function TestimonialsSection() {
               key={i}
               className="relative bg-luxury-charcoal p-8 border border-white/5 hover:border-gold/20 transition-colors duration-300"
             >
-              <Quote
-                size={32}
-                className="text-gold/20 mb-4"
-                strokeWidth={1}
-              />
+              <Quote size={32} className="text-gold/20 mb-4" strokeWidth={1} />
 
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, j) => (

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, ShoppingBag, Heart, ChevronLeft, Minus, Plus, Package, RotateCcw, Shield } from 'lucide-react';
+import { ShoppingBag, Heart, ChevronLeft, Minus, Plus, Package, RotateCcw, Shield } from 'lucide-react';
 import { getProductById, products } from '../data/products';
 import { useCartStore, formatPrice } from '../store/cartStore';
 import { ProductSize } from '../types';
-import OlfactoryNotes from '../components/OlfactoryNotes';
+import FabricSpecs from '../components/OlfactoryNotes';
 import ProductCard from '../components/ProductCard';
 
 export default function ProductDetail() {
@@ -35,15 +35,13 @@ export default function ProductDetail() {
   };
 
   const related = products
-    .filter(p => p.id !== product.id && (p.category === product.category || p.brand === product.brand))
+    .filter(p => p.id !== product.id && p.category === product.category)
     .slice(0, 4);
 
   const categoryLabels: Record<string, string> = {
-    floral: 'Floral', amaderada: 'Amaderada', oriental: 'Oriental',
-    fresca: 'Fresca', chipre: 'Chipre', fougere: 'Fougère',
-  };
-  const genderLabels: Record<string, string> = {
-    women: 'Mujer', men: 'Hombre', unisex: 'Unisex',
+    panas: 'Panas',
+    telas: 'Telas',
+    cuerinas: 'Cuerinas',
   };
 
   return (
@@ -108,7 +106,7 @@ export default function ProductDetail() {
                 </span>
               )}
               <span className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray">
-                {categoryLabels[product.category]} · {genderLabels[product.gender]}
+                {categoryLabels[product.category] ?? product.category}
               </span>
             </div>
 
@@ -119,44 +117,27 @@ export default function ProductDetail() {
               {product.name}
             </h1>
 
-            {/* Rating */}
-            <div className="flex items-center gap-2 mb-5">
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={12}
-                    className={i < Math.floor(product.rating) ? 'fill-gold text-gold' : 'text-gray-200 fill-gray-200'}
-                  />
-                ))}
-              </div>
-              <span className="font-sans font-light text-xs text-luxury-lightgray">
-                {product.rating} ({product.reviews} reseñas)
-              </span>
-            </div>
-
             <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed mb-6">
               {product.longDescription}
             </p>
 
-            {/* Size selector */}
+            {/* Color selector */}
             <div className="mb-6">
               <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">
-                Tamaño
+                Color{selectedSize?.color ? ` — ${selectedSize.color}` : ''}
               </p>
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex gap-2 flex-wrap">
                 {product.sizes.map(size => (
                   <button
                     key={size.ml}
                     onClick={() => setSelectedSize(size)}
-                    className={`flex flex-col items-center px-5 py-3 border transition-all duration-200 ${
+                    className={`px-4 py-2 border text-xs font-sans font-light transition-all duration-200 ${
                       selectedSize?.ml === size.ml
                         ? 'border-gold bg-gold/10 text-luxury-black'
                         : 'border-gray-200 text-luxury-gray hover:border-gold/50'
                     }`}
                   >
-                    <span className="font-sans font-light text-sm">{size.ml} ml</span>
-                    <span className="font-serif text-xs text-luxury-lightgray mt-0.5">{formatPrice(size.price)}</span>
+                    {size.color ?? `${size.ml}`}
                   </button>
                 ))}
               </div>
@@ -166,11 +147,17 @@ export default function ProductDetail() {
             <div className="flex items-baseline gap-3 mb-6">
               <p className="font-serif text-3xl text-luxury-black">
                 {formatPrice(selectedSize?.price ?? product.price)}
+                <span className="font-sans font-light text-sm text-luxury-lightgray ml-1">/ metro</span>
               </p>
               {product.originalPrice && (
                 <p className="font-sans font-light text-base text-luxury-lightgray line-through">
                   {formatPrice(product.originalPrice)}
                 </p>
+              )}
+              {product.originalPrice && (
+                <span className="bg-gold/10 text-gold text-[10px] px-2 py-1 font-sans font-light">
+                  -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+                </span>
               )}
             </div>
 
@@ -184,8 +171,8 @@ export default function ProductDetail() {
                 >
                   <Minus size={14} />
                 </button>
-                <span className="w-10 text-center font-sans font-light text-sm text-luxury-charcoal">
-                  {quantity}
+                <span className="w-12 text-center font-sans font-light text-sm text-luxury-charcoal">
+                  {quantity}m
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
@@ -202,7 +189,7 @@ export default function ProductDetail() {
                 className={`flex-1 flex items-center justify-center gap-2 py-3 font-sans font-light text-xs tracking-widest uppercase transition-all duration-300 ${
                   addedFeedback
                     ? 'bg-green-600 text-white'
-                    : 'bg-luxury-black text-white hover:bg-gold hover:text-luxury-black'
+                    : 'bg-luxury-black text-white hover:bg-gold hover:text-white'
                 }`}
               >
                 <ShoppingBag size={14} strokeWidth={1.5} />
@@ -225,9 +212,9 @@ export default function ProductDetail() {
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-4 py-5 border-t border-gray-100">
               {[
-                { icon: Package, text: 'Envío express' },
+                { icon: Package, text: 'Envío gratis' },
                 { icon: RotateCcw, text: '30 días devolución' },
-                { icon: Shield, text: '100% auténtico' },
+                { icon: Shield, text: 'Calidad garantizada' },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex flex-col items-center gap-2 text-center">
                   <Icon size={16} strokeWidth={1} className="text-gold" />
@@ -238,17 +225,17 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Olfactory notes section */}
+        {/* Fabric specs section */}
         <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-gray-100 pt-12">
           <div>
-            <p className="section-subtitle mb-3">El alma del perfume</p>
-            <h2 className="font-serif text-2xl text-luxury-black mb-8">Pirámide Olfativa</h2>
-            <OlfactoryNotes notes={product.notes} />
+            <p className="section-subtitle mb-3">Especificaciones técnicas</p>
+            <h2 className="font-serif text-2xl text-luxury-black mb-8">Ficha de Producto</h2>
+            <FabricSpecs notes={product.notes} />
           </div>
 
           <div>
-            <p className="section-subtitle mb-3">Sobre la fragancia</p>
-            <h2 className="font-serif text-2xl text-luxury-black mb-5">Notas del Perfumista</h2>
+            <p className="section-subtitle mb-3">Sobre la tela</p>
+            <h2 className="font-serif text-2xl text-luxury-black mb-5">Descripción</h2>
             <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed mb-5">
               {product.description}
             </p>
@@ -272,7 +259,7 @@ export default function ProductDetail() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <p className="section-subtitle mb-2">También te puede gustar</p>
-              <h2 className="font-serif text-2xl text-luxury-black">Fragancias Relacionadas</h2>
+              <h2 className="font-serif text-2xl text-luxury-black">Telas Relacionadas</h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-7">
               {related.map(p => (

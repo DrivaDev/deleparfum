@@ -96,7 +96,7 @@ export default function CartSidebar() {
                     {item.product.name}
                   </Link>
                   <p className="font-sans font-light text-xs text-luxury-lightgray mt-0.5">
-                    {item.selectedSize.ml} ml
+                    {item.selectedSize.color ?? item.selectedSize.ml}
                   </p>
 
                   <div className="flex items-center justify-between mt-3">

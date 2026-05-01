@@ -6,7 +6,7 @@ export default function Cart() {
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCartStore();
   const total = getTotalPrice();
   const itemCount = getTotalItems();
-  const shipping = total >= 50000 ? 0 : 3500;
+  const shipping = 0;
 
   if (items.length === 0) {
     return (
@@ -14,7 +14,7 @@ export default function Cart() {
         <ShoppingBag size={48} strokeWidth={0.8} className="text-gray-300" />
         <h1 className="font-serif text-3xl text-luxury-black">Tu bolsa está vacía</h1>
         <p className="font-sans font-light text-sm text-luxury-lightgray">
-          Explorá nuestra colección y encontrá tu fragancia perfecta.
+          Explorá nuestro catálogo y encontrá la tela perfecta para tu proyecto.
         </p>
         <Link to="/catalogo" className="btn-primary mt-2">
           Ir al catálogo
@@ -62,7 +62,7 @@ export default function Cart() {
                       </h3>
                     </Link>
                     <p className="font-sans font-light text-xs text-luxury-lightgray mt-1">
-                      {item.selectedSize.ml} ml — {formatPrice(item.selectedSize.price)} c/u
+                      {item.selectedSize.color ?? `${item.selectedSize.ml}`} — {formatPrice(item.selectedSize.price)}/m
                     </p>
 
                     <div className="flex items-center justify-between mt-4">

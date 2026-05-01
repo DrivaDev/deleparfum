@@ -8,19 +8,19 @@ export default {
     extend: {
       colors: {
         gold: {
-          DEFAULT: '#C9A96E',
-          light: '#E2C89A',
-          dark: '#A07840',
+          DEFAULT: '#C4733A',
+          light: '#DFA070',
+          dark: '#9B4E1C',
         },
         cream: {
-          DEFAULT: '#F5F0E8',
+          DEFAULT: '#F5EFE6',
           dark: '#EDE5D5',
         },
         luxury: {
-          black: '#0A0A0A',
-          charcoal: '#1C1C1C',
-          gray: '#4A4A4A',
-          lightgray: '#9A9A9A',
+          black: '#120E0B',
+          charcoal: '#2A1F1A',
+          gray: '#5C4A40',
+          lightgray: '#9A8880',
         },
       },
       fontFamily: {

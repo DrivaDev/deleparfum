@@ -126,14 +126,14 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; b
   cancelado:  { label: 'Cancelado',  bg: 'bg-red-50',     text: 'text-red-700',     border: 'border-red-300',    icon: XCircle },
 };
 
-const FAMILIES: OlfactoryFamily[] = ['floral', 'amaderada', 'oriental', 'fresca', 'chipre', 'fougere'];
+const FAMILIES: OlfactoryFamily[] = ['panas', 'telas', 'cuerinas'];
 const GENDERS: Gender[] = ['women', 'men', 'unisex'];
 
 const blankProduct = (): Omit<Product, 'id'> => ({
   name: '', brand: '', description: '', longDescription: '',
   notes: { top: [], heart: [], base: [] },
   price: 0, originalPrice: undefined,
-  category: 'floral', gender: 'unisex',
+  category: 'panas', gender: 'unisex',
   sizes: [{ ml: 50, price: 0 }],
   image: '', images: [],
   rating: 5, reviews: 0,
@@ -229,7 +229,7 @@ export default function Admin() {
     <>
       <div className="px-6 py-6 border-b border-white/10">
         <Logo variant="light" size="sm" />
-        <p className="text-[9px] text-white/30 tracking-[0.25em] uppercase mt-2">Panel Admin</p>
+        <p className="text-[9px] text-white/30 tracking-[0.25em] uppercase mt-2">Telas Web 2026</p>
       </div>
       <nav className="flex-1 px-3 py-5 space-y-0.5">
         {navItems.map(item => {

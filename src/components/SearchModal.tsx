@@ -71,7 +71,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Buscar perfumes, marcas..."
+            placeholder="Buscar telas, líneas..."
             className="flex-1 font-sans font-light text-sm text-luxury-charcoal placeholder-luxury-lightgray outline-none"
           />
           <button onClick={onClose} className="text-luxury-lightgray hover:text-luxury-black transition-colors">

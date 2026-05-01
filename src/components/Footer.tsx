@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram } from 'lucide-react';
+import { Instagram, MessageCircle } from 'lucide-react';
 import Logo from './Logo';
 
 const footerLinks = [
@@ -19,28 +19,26 @@ export default function Footer() {
           <div>
             <Logo variant="light" size="lg" />
             <p className="font-sans font-light text-xs text-white/50 leading-relaxed mt-6 max-w-xs">
-              Perfumería exclusiva con envíos a todo el país. Fragancias 100% auténticas con packaging de lujo.
+              Las mejores telas para tapicería y decoración. Calidad premium y envío a todo el país.
             </p>
             <div className="flex gap-3 mt-6">
               <a
-                href="https://instagram.com/deleparfum"
+                href="https://instagram.com/telasweb2026"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram @deleparfum"
+                aria-label="Instagram @telasweb2026"
                 className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
               >
                 <Instagram size={14} strokeWidth={1.5} />
               </a>
               <a
-                href="https://tiktok.com/@deleparfum_"
+                href="https://wa.me/5491179047144"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="TikTok @deleparfum_"
+                aria-label="WhatsApp"
                 className="w-9 h-9 border border-white/20 flex items-center justify-center text-white/50 hover:border-gold hover:text-gold transition-all duration-200"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.17 8.17 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-                </svg>
+                <MessageCircle size={14} strokeWidth={1.5} />
               </a>
             </div>
           </div>
@@ -48,7 +46,7 @@ export default function Footer() {
           {/* Links column */}
           <div>
             <p className="font-sans font-light text-[9px] tracking-[0.3em] uppercase text-gold mb-5">
-              De Leparfum
+              Telas Web 2026
             </p>
             <ul className="space-y-3">
               {footerLinks.map(link => (
@@ -66,11 +64,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-sans font-light text-[10px] text-white/30 tracking-wide">
-            © {year} De Leparfum. Todos los derechos reservados.
+            © {year} Telas Web 2026. Todos los derechos reservados.
           </p>
           <p className="font-sans font-light text-[10px] text-white/30">
             Desarrollado por{' '}

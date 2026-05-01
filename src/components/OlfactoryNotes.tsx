@@ -1,15 +1,15 @@
-import { OlfactoryNotes as OlfactoryNotesType } from '../types';
+import { OlfactoryNotes as NotesType } from '../types';
 
-interface OlfactoryNotesProps {
-  notes: OlfactoryNotesType;
+interface FabricSpecsProps {
+  notes: NotesType;
   compact?: boolean;
 }
 
-export default function OlfactoryNotes({ notes, compact = false }: OlfactoryNotesProps) {
+export default function FabricSpecs({ notes, compact = false }: FabricSpecsProps) {
   const tiers = [
-    { label: 'Notas de Salida', notes: notes.top, description: 'Primera impresión' },
-    { label: 'Notas de Corazón', notes: notes.heart, description: 'La esencia del perfume' },
-    { label: 'Notas de Fondo', notes: notes.base, description: 'La huella que deja' },
+    { label: 'Composición', notes: notes.top, description: 'Material y medidas' },
+    { label: 'Características', notes: notes.heart, description: 'Propiedades de la tela' },
+    { label: 'Usos recomendados', notes: notes.base, description: 'Aplicaciones ideales' },
   ];
 
   if (compact) {
@@ -18,10 +18,7 @@ export default function OlfactoryNotes({ notes, compact = false }: OlfactoryNote
         {tiers.map((tier, i) => (
           <div key={i} className="flex gap-3 items-start">
             <div className="flex-shrink-0 mt-1">
-              <div
-                className="w-2 h-2 rounded-full border border-gold"
-                style={{ opacity: 1 - i * 0.2 }}
-              />
+              <div className="w-2 h-2 rounded-full border border-gold" style={{ opacity: 1 - i * 0.2 }} />
             </div>
             <div>
               <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray">{tier.label}</p>
@@ -35,17 +32,15 @@ export default function OlfactoryNotes({ notes, compact = false }: OlfactoryNote
 
   return (
     <div className="relative">
-      {/* Pyramid visual */}
-      <div className="flex flex-col items-center gap-0 mb-8">
+      <div className="flex flex-col gap-0 mb-8">
         {tiers.map((tier, i) => {
-          const widths = ['w-3/5', 'w-4/5', 'w-full'];
-          const backgrounds = ['bg-gold/20', 'bg-gold/12', 'bg-gold/6'];
+          const backgrounds = ['bg-gold/15', 'bg-gold/10', 'bg-gold/5'];
           return (
             <div
               key={i}
-              className={`${widths[i]} ${backgrounds[i]} flex flex-col items-center py-5 px-6 text-center border-b border-gold/10`}
+              className={`${backgrounds[i]} px-6 py-5 border-b border-gold/10`}
             >
-              <span className="font-sans font-light text-[9px] tracking-widest uppercase text-gold mb-1">
+              <span className="font-sans font-light text-[9px] tracking-widest uppercase text-gold mb-1 block">
                 {tier.description}
               </span>
               <p className="font-sans font-light text-xs tracking-widest uppercase text-luxury-lightgray mb-2">

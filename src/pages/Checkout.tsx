@@ -28,7 +28,7 @@ export default function Checkout() {
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
 
   const total = getTotalPrice();
-  const shipping = total >= 50000 ? 0 : 3500;
+  const shipping = 0;
 
   if (items.length === 0) {
     return (
@@ -218,7 +218,7 @@ export default function Checkout() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-serif text-xs text-luxury-black leading-tight">{item.product.name}</p>
-                      <p className="font-sans font-light text-[10px] text-luxury-lightgray">{item.selectedSize.ml} ml</p>
+                      <p className="font-sans font-light text-[10px] text-luxury-lightgray">{item.selectedSize.color ?? item.selectedSize.ml} · {item.quantity}m</p>
                     </div>
                     <p className="font-sans font-light text-xs text-luxury-charcoal">
                       {formatPrice(item.selectedSize.price * item.quantity)}

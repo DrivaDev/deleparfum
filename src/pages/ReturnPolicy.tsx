@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { RotateCcw, Clock, ShieldCheck, AlertCircle, Package, Mail } from 'lucide-react';
+import { RotateCcw, Clock, ShieldCheck, AlertCircle, Package, MessageCircle } from 'lucide-react';
 
 const sections = [
   {
@@ -10,17 +10,17 @@ const sections = [
   {
     icon: ShieldCheck,
     title: 'Condiciones del Producto',
-    body: 'El producto debe estar sin uso, en su embalaje original sellado y acompañado de todos sus accesorios (caja, bolsa, factura). Los perfumes con el precinto roto no son elegibles para devolución, salvo defecto de fabricación comprobado.',
+    body: 'La tela debe estar sin cortar, en su estado original tal como fue recibida. No se aceptan devoluciones de productos que hayan sido cortados, lavados o modificados de cualquier forma.',
   },
   {
     icon: Package,
     title: 'Productos con Defecto',
-    body: 'Si recibís un producto defectuoso o dañado durante el envío, comunicate con nosotros dentro de las 48 horas de recibido el paquete. Te repondremos el producto sin costo alguno o realizaremos el reembolso total según tu preferencia.',
+    body: 'Si recibís una tela con defecto de fabricación o dañada durante el envío, comunicate con nosotros dentro de las 48 horas de recibido el paquete. Repondremos el producto sin costo o realizaremos el reembolso total.',
   },
   {
     icon: AlertCircle,
     title: 'Productos Excluidos',
-    body: 'Por razones de higiene y seguridad, no aceptamos devoluciones de: fragancias ya usadas o con el precinto violado, sets con algún componente abierto, y productos adquiridos en liquidación o con descuento especial mayor al 40%.',
+    body: 'No aceptamos devoluciones de telas que hayan sido cortadas, de productos en liquidación con descuento especial mayor al 40%, ni de compras realizadas hace más de 30 días.',
   },
 ];
 
@@ -49,21 +49,21 @@ export default function ReturnPolicy() {
         {/* Quick summary */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-gray-200 border border-gray-200 mb-16">
           {[
-            { label: '30 días', sub: 'para solicitar devolución' },
-            { label: 'Gratis', sub: 'en cambios por defecto' },
-            { label: '5–7 días', sub: 'para acreditar el reembolso' },
+            { label: 'Plazo', value: '30 días' },
+            { label: 'Condición', value: 'Sin cortar' },
+            { label: 'Reembolso', value: '100%' },
           ].map(item => (
             <div key={item.label} className="bg-white p-6 text-center">
-              <p className="font-serif text-2xl text-luxury-black mb-1">{item.label}</p>
-              <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray">{item.sub}</p>
+              <p className="font-serif text-3xl text-gold mb-1">{item.value}</p>
+              <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray">{item.label}</p>
             </div>
           ))}
         </div>
 
         {/* Sections */}
-        <div className="space-y-10 mb-16">
+        <div className="space-y-8 mb-16">
           {sections.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="flex gap-6">
+            <div key={title} className="flex gap-5">
               <div className="flex-shrink-0 w-10 h-10 border border-gold/30 flex items-center justify-center mt-0.5">
                 <Icon size={16} strokeWidth={1.5} className="text-gold" />
               </div>
@@ -77,20 +77,16 @@ export default function ReturnPolicy() {
 
         {/* Process */}
         <div className="bg-white border border-gray-100 p-8 mb-16">
-          <h2 className="font-serif text-xl text-luxury-black mb-8">¿Cómo solicitar una devolución?</h2>
-          <ol className="space-y-6">
+          <h2 className="font-serif text-xl text-luxury-black mb-6">¿Cómo iniciar una devolución?</h2>
+          <ol className="space-y-5">
             {[
-              { n: '01', title: 'Contactanos', desc: 'Enviá un email a devoluciones@deleparfum.com con tu número de pedido y el motivo de la devolución.' },
-              { n: '02', title: 'Aprobación', desc: 'Nuestro equipo revisará tu solicitud y te responderá dentro de las 24 horas hábiles con las instrucciones de envío.' },
-              { n: '03', title: 'Envío del producto', desc: 'Embalá el producto en su caja original y envialo a nuestra dirección. El costo de envío corre por tu cuenta, salvo productos defectuosos.' },
-              { n: '04', title: 'Reembolso o cambio', desc: 'Una vez recibido e inspeccionado el producto (2–3 días hábiles), procesaremos tu reembolso o envío de cambio. El crédito aparecerá en tu cuenta en 5–7 días hábiles.' },
+              { n: '01', text: 'Contactanos por WhatsApp indicando tu número de pedido y el motivo de la devolución.' },
+              { n: '02', text: 'Te indicaremos cómo proceder con el envío de la tela de vuelta.' },
+              { n: '03', text: 'Una vez recibida y verificada la tela, procesamos el reembolso o cambio.' },
             ].map(step => (
-              <li key={step.n} className="flex gap-5">
-                <span className="font-serif text-2xl text-gold/40 flex-shrink-0 leading-none">{step.n}</span>
-                <div>
-                  <p className="font-sans font-light text-xs tracking-widest uppercase text-luxury-black mb-1">{step.title}</p>
-                  <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed">{step.desc}</p>
-                </div>
+              <li key={step.n} className="flex gap-4">
+                <span className="font-serif text-xl text-gold/40 flex-shrink-0 leading-none">{step.n}</span>
+                <p className="font-sans font-light text-sm text-luxury-gray leading-relaxed">{step.text}</p>
               </li>
             ))}
           </ol>
@@ -99,17 +95,22 @@ export default function ReturnPolicy() {
         {/* CTA */}
         <div className="text-center border-t border-gray-200 pt-12">
           <div className="flex justify-center mb-4">
-            <Mail size={20} strokeWidth={1.5} className="text-luxury-lightgray" />
+            <MessageCircle size={20} strokeWidth={1.5} className="text-luxury-lightgray" />
           </div>
-          <h3 className="font-serif text-xl text-luxury-black mb-3">¿Tenés alguna pregunta?</h3>
-          <p className="font-sans font-light text-sm text-luxury-gray mb-6">
-            Nuestro equipo de atención está disponible de lunes a viernes de 10 a 18 hs.
+          <h3 className="font-serif text-xl text-luxury-black mb-3">¿Tenés alguna consulta?</h3>
+          <p className="font-sans font-light text-sm text-luxury-gray mb-2">
+            Escribinos por WhatsApp o por email a{' '}
+            <a href="mailto:telasweb2026@gmail.com" className="text-gold hover:underline">
+              telasweb2026@gmail.com
+            </a>
           </p>
           <a
-            href="mailto:devoluciones@deleparfum.com"
-            className="btn-primary inline-block"
+            href="https://wa.me/5491179047144"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary inline-block mt-4"
           >
-            devoluciones@deleparfum.com
+            Escribir por WhatsApp
           </a>
           <p className="mt-6">
             <Link to="/catalogo" className="font-sans font-light text-xs text-luxury-lightgray hover:text-luxury-black transition-colors underline underline-offset-4">

@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
-import { Truck, MapPin, Clock, Package, ShieldCheck, Phone } from 'lucide-react';
+import { Truck, MapPin, Clock, Package, ShieldCheck, MessageCircle } from 'lucide-react';
 
 const zones = [
   {
     name: 'CABA y GBA',
     time: '24–48 hs hábiles',
-    price: 'Gratis en compras +$50.000',
-    priceAlt: '$3.500 en compras menores',
+    price: 'Envío gratis',
+    priceAlt: 'En todos los pedidos',
   },
   {
     name: 'Interior del país',
     time: '3–7 días hábiles',
-    price: 'Gratis en compras +$50.000',
-    priceAlt: '$3.500 en compras menores',
+    price: 'Envío gratis',
+    priceAlt: 'En todos los pedidos',
   },
   {
     name: 'Zonas remotas',
     time: '7–15 días hábiles',
-    price: 'Consultar costo',
+    price: 'Consultar',
     priceAlt: 'Patagonia, NOA, Cuyo profundo',
   },
 ];
@@ -25,19 +25,19 @@ const zones = [
 const faqs = [
   {
     q: '¿Cómo sé que mi pedido está en camino?',
-    a: 'Cuando tu pedido sea despachado, te enviaremos un email con el número de seguimiento y el enlace para rastrearlo en tiempo real.',
+    a: 'Cuando tu pedido sea despachado, te contactaremos por WhatsApp con el número de seguimiento y el enlace para rastrearlo.',
   },
   {
     q: '¿Puedo cambiar la dirección de entrega?',
-    a: 'Podés modificar la dirección mientras el pedido todavía esté en estado "Procesando". Una vez despachado, no es posible cambiarla.',
+    a: 'Podés modificar la dirección mientras el pedido esté en estado "Procesando". Una vez despachado, no es posible cambiarla.',
   },
   {
     q: '¿Qué pasa si no estoy cuando llega el paquete?',
     a: 'El correo realiza hasta 2 intentos de entrega. Si no hay nadie, el paquete queda en la sucursal más cercana por 5 días hábiles.',
   },
   {
-    q: '¿Cómo viajan los frascos?',
-    a: 'Todos los envíos se embalan con protección especial anti-golpes y doble caja. Los frascos están asegurados para que lleguen en perfecto estado.',
+    q: '¿Cómo se embala la tela?',
+    a: 'Las telas se enrollan y embalan correctamente para evitar arrugas y daños durante el transporte.',
   },
 ];
 
@@ -56,7 +56,7 @@ export default function Shipping() {
             Envíos a todo el país
           </h1>
           <p className="font-sans font-light text-sm text-white/60 max-w-xl mx-auto leading-relaxed">
-            Despachamos a toda la Argentina con packaging de lujo y seguimiento en tiempo real.
+            Despachamos a toda la Argentina. Envío gratis en todos los pedidos.
           </p>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function Shipping() {
           <div className="flex items-center gap-3">
             <Truck size={18} strokeWidth={1.5} className="text-gold flex-shrink-0" />
             <p className="font-sans font-light text-sm text-white">
-              <span className="text-gold">Envío gratis</span> en compras superiores a <span className="text-gold">$50.000</span>
+              <span className="text-gold">Envío gratis</span> en todos los pedidos, sin mínimo de compra
             </p>
           </div>
           <Link to="/catalogo" className="font-sans font-light text-[10px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors border-b border-white/20 hover:border-gold pb-0.5 whitespace-nowrap">
@@ -106,10 +106,10 @@ export default function Shipping() {
           <div className="bg-white border border-gray-100 p-8">
             <ol className="space-y-6">
               {[
-                { n: '01', title: 'Confirmás tu pedido', desc: 'Completás el checkout y recibís un email de confirmación con el detalle de tu compra.' },
-                { n: '02', title: 'Preparamos tu pedido', desc: 'Nuestro equipo selecciona y embala cada fragancia con el packaging exclusivo de De Leparfum en 1–2 días hábiles.' },
-                { n: '03', title: 'Despacho', desc: 'El paquete es entregado a la empresa de transporte y recibís el número de seguimiento por email.' },
-                { n: '04', title: 'Entrega', desc: 'El envío llega a tu puerta. Si no estás, el correo deja aviso o lo retiras en la sucursal más cercana.' },
+                { n: '01', title: 'Confirmás tu pedido', desc: 'Completás el checkout y se abre WhatsApp con el detalle de tu compra para confirmar.' },
+                { n: '02', title: 'Coordinamos el pago', desc: 'Te enviamos los datos bancarios y confirmamos la recepción de la transferencia.' },
+                { n: '03', title: 'Preparamos y despachamos', desc: 'Preparamos tu pedido y lo entregamos al transporte en 1–2 días hábiles.' },
+                { n: '04', title: 'Entrega en puerta', desc: 'El envío llega a tu domicilio. Te avisamos por WhatsApp cuando sea despachado.' },
               ].map(step => (
                 <li key={step.n} className="flex gap-5">
                   <span className="font-serif text-2xl text-gold/40 flex-shrink-0 leading-none">{step.n}</span>
@@ -126,9 +126,9 @@ export default function Shipping() {
         {/* Features */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
           {[
-            { icon: Package, title: 'Packaging de lujo', desc: 'Caja rígida con papel tissue, cinta satinada y tarjeta personalizada incluida.' },
-            { icon: ShieldCheck, title: 'Envío asegurado', desc: 'Todos los paquetes viajan asegurados contra roturas o pérdidas durante el transporte.' },
-            { icon: Truck, title: 'Seguimiento en tiempo real', desc: 'Recibís el link de tracking para monitorear tu pedido desde que sale hasta que llega.' },
+            { icon: Package, title: 'Embalaje seguro', desc: 'Las telas se enrollan y protegen correctamente para que lleguen en perfecto estado.' },
+            { icon: ShieldCheck, title: 'Envío asegurado', desc: 'Todos los paquetes viajan asegurados contra daños o pérdidas durante el transporte.' },
+            { icon: Truck, title: 'Seguimiento incluido', desc: 'Te enviamos el número de seguimiento por WhatsApp para que puedas rastrear tu pedido.' },
           ].map(({ icon: Icon, title, desc }) => (
             <div key={title} className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 border border-gold/30 flex items-center justify-center mt-0.5">
@@ -158,19 +158,19 @@ export default function Shipping() {
         {/* CTA */}
         <div className="text-center border-t border-gray-200 pt-12">
           <div className="flex justify-center mb-4">
-            <Phone size={20} strokeWidth={1.5} className="text-luxury-lightgray" />
+            <MessageCircle size={20} strokeWidth={1.5} className="text-luxury-lightgray" />
           </div>
           <h3 className="font-serif text-xl text-luxury-black mb-3">¿Tenés alguna consulta?</h3>
           <p className="font-sans font-light text-sm text-luxury-gray mb-6">
-            Escribinos por Instagram o por email y te respondemos a la brevedad.
+            Escribinos por WhatsApp y te respondemos a la brevedad.
           </p>
           <a
-            href="https://instagram.com/deleparfum"
+            href="https://wa.me/5491179047144"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary inline-block"
           >
-            @deleparfum
+            Escribir por WhatsApp
           </a>
           <p className="mt-6">
             <Link to="/catalogo" className="font-sans font-light text-xs text-luxury-lightgray hover:text-luxury-black transition-colors underline underline-offset-4">

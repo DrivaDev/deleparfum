@@ -1,5 +1,5 @@
 import { X, SlidersHorizontal } from 'lucide-react';
-import { FilterState, OlfactoryFamily, Gender } from '../types';
+import { FilterState, OlfactoryFamily } from '../types';
 import { getBrands, getMaxPrice } from '../data/products';
 
 interface FilterSidebarProps {
@@ -10,18 +10,9 @@ interface FilterSidebarProps {
 }
 
 const categoryOptions: { value: OlfactoryFamily; label: string }[] = [
-  { value: 'floral', label: 'Floral' },
-  { value: 'amaderada', label: 'Amaderada' },
-  { value: 'oriental', label: 'Oriental' },
-  { value: 'fresca', label: 'Fresca' },
-  { value: 'chipre', label: 'Chipre' },
-  { value: 'fougere', label: 'Fougère' },
-];
-
-const genderOptions: { value: Gender; label: string }[] = [
-  { value: 'women', label: 'Mujer' },
-  { value: 'men', label: 'Hombre' },
-  { value: 'unisex', label: 'Unisex' },
+  { value: 'panas', label: 'Panas' },
+  { value: 'telas', label: 'Telas' },
+  { value: 'cuerinas', label: 'Cuerinas' },
 ];
 
 const sortOptions = [
@@ -41,13 +32,6 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
       ? filters.categories.filter(c => c !== cat)
       : [...filters.categories, cat];
     onChange({ ...filters, categories: updated });
-  };
-
-  const toggleGender = (g: Gender) => {
-    const updated = filters.genders.includes(g)
-      ? filters.genders.filter(x => x !== g)
-      : [...filters.genders, g];
-    onChange({ ...filters, genders: updated });
   };
 
   const toggleBrand = (brand: string) => {
@@ -71,7 +55,6 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
 
   const hasActiveFilters =
     filters.categories.length > 0 ||
-    filters.genders.length > 0 ||
     filters.brands.length > 0 ||
     filters.priceMax < maxPrice;
 
@@ -114,7 +97,7 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
 
         {/* Categories */}
         <div>
-          <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">Familia Olfativa</p>
+          <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">Categoría</p>
           <div className="space-y-2">
             {categoryOptions.map(opt => (
               <label key={opt.value} className="flex items-center gap-3 cursor-pointer group">
@@ -132,26 +115,6 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
           </div>
         </div>
 
-        {/* Gender */}
-        <div>
-          <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">Género</p>
-          <div className="flex gap-2 flex-wrap">
-            {genderOptions.map(opt => (
-              <button
-                key={opt.value}
-                onClick={() => toggleGender(opt.value)}
-                className={`px-4 py-1.5 border text-xs font-sans font-light transition-all duration-200 ${
-                  filters.genders.includes(opt.value)
-                    ? 'border-gold bg-gold/10 text-luxury-black'
-                    : 'border-gray-200 text-luxury-gray hover:border-gold/50'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Price */}
         <div>
           <div className="flex justify-between mb-3">
@@ -164,7 +127,7 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
             type="range"
             min={0}
             max={maxPrice}
-            step={5000}
+            step={500}
             value={filters.priceMax}
             onChange={e => onChange({ ...filters, priceMax: Number(e.target.value) })}
             className="w-full accent-gold"
@@ -175,9 +138,9 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
           </div>
         </div>
 
-        {/* Brands */}
+        {/* Lines */}
         <div>
-          <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">Marca</p>
+          <p className="font-sans font-light text-[10px] tracking-widest uppercase text-luxury-lightgray mb-3">Línea</p>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {brands.map(brand => (
               <label key={brand} className="flex items-center gap-3 cursor-pointer group">
@@ -200,12 +163,10 @@ export default function FilterSidebar({ filters, onChange, isOpen, onClose }: Fi
 
   return (
     <>
-      {/* Desktop sidebar */}
       <aside className="hidden lg:block w-64 flex-shrink-0 bg-white border-r border-gray-100 min-h-screen sticky top-20">
         {content}
       </aside>
 
-      {/* Mobile drawer */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-luxury-black/50" onClick={onClose} />

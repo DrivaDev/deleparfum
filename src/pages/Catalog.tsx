@@ -35,8 +35,6 @@ export default function Catalog() {
     if (isNewFilter) result = result.filter(p => p.isNew);
     if (filters.categories.length > 0)
       result = result.filter(p => filters.categories.includes(p.category));
-    if (filters.genders.length > 0)
-      result = result.filter(p => filters.genders.includes(p.gender));
     if (filters.brands.length > 0)
       result = result.filter(p => filters.brands.includes(p.brand));
     result = result.filter(p => p.price <= filters.priceMax);
@@ -69,97 +67,46 @@ export default function Catalog() {
       {/* Page header */}
       <div className="bg-cream py-12 md:py-16 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="section-subtitle mb-3">De Leparfum</p>
+          <p className="section-subtitle mb-3">Telas Web 2026</p>
           <h1 className="section-title">{pageTitle}</h1>
           <p className="font-sans font-light text-sm text-luxury-gray mt-3">
-            {filtered.length} fragancia{filtered.length !== 1 ? 's' : ''} encontrada{filtered.length !== 1 ? 's' : ''}
+            {filtered.length} línea{filtered.length !== 1 ? 's' : ''} encontrada{filtered.length !== 1 ? 's' : ''}
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-0">
-        <FilterSidebar
-          filters={filters}
-          onChange={setFilters}
-          isOpen={filterOpen}
-          onClose={() => setFilterOpen(false)}
-        />
+        <FilterSidebar filters={filters} onChange={setFilters} isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
 
-        {/* Main content */}
-        <div className="flex-1 min-w-0 py-8 lg:pl-8">
+        <div className="flex-1 py-8 lg:px-8">
           {/* Toolbar */}
-          <div className="flex items-center justify-between mb-7 pb-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-6">
             <button
               onClick={() => setFilterOpen(true)}
-              className="lg:hidden flex items-center gap-2 font-sans font-light text-xs tracking-widest uppercase text-luxury-gray hover:text-luxury-black"
+              className="lg:hidden flex items-center gap-2 font-sans font-light text-xs tracking-widest uppercase text-luxury-gray border border-gray-200 px-4 py-2 hover:border-gold transition-colors"
             >
               <SlidersHorizontal size={14} strokeWidth={1.5} />
               Filtros
-              {(filters.categories.length > 0 || filters.genders.length > 0 || filters.brands.length > 0) && (
-                <span className="bg-gold text-luxury-black text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-                  {filters.categories.length + filters.genders.length + filters.brands.length}
-                </span>
-              )}
             </button>
-
-            <div className="hidden lg:flex items-center gap-2">
-              <span className="font-sans font-light text-xs text-luxury-lightgray">
-                {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-
-            {/* Search input */}
-            <input
-              type="text"
-              value={filters.search}
-              onChange={e => setFilters({ ...filters, search: e.target.value })}
-              placeholder="Buscar en catálogo..."
-              className="hidden md:block input-field max-w-xs text-xs py-2"
-            />
-
-            {/* Layout toggle */}
-            <div className="flex items-center gap-1 border border-gray-200 p-1">
-              <button
-                onClick={() => setLayout('grid')}
-                className={`p-1.5 transition-colors ${layout === 'grid' ? 'bg-luxury-black text-white' : 'text-luxury-lightgray hover:text-luxury-black'}`}
-                aria-label="Vista en grilla"
-              >
-                <LayoutGrid size={14} />
+            <div className="flex items-center gap-2 ml-auto">
+              <button onClick={() => setLayout('grid')} className={`p-2 transition-colors ${layout === 'grid' ? 'text-luxury-black' : 'text-gray-300 hover:text-luxury-gray'}`}>
+                <LayoutGrid size={16} strokeWidth={1.5} />
               </button>
-              <button
-                onClick={() => setLayout('list')}
-                className={`p-1.5 transition-colors ${layout === 'list' ? 'bg-luxury-black text-white' : 'text-luxury-lightgray hover:text-luxury-black'}`}
-                aria-label="Vista en lista"
-              >
-                <List size={14} />
+              <button onClick={() => setLayout('list')} className={`p-2 transition-colors ${layout === 'list' ? 'text-luxury-black' : 'text-gray-300 hover:text-luxury-gray'}`}>
+                <List size={16} strokeWidth={1.5} />
               </button>
             </div>
           </div>
 
-          {/* Products */}
           {filtered.length === 0 ? (
-            <div className="text-center py-24">
+            <div className="text-center py-20">
               <p className="font-serif text-2xl text-luxury-black mb-3">Sin resultados</p>
-              <p className="font-sans font-light text-sm text-luxury-lightgray">
-                Probá con otros filtros o términos de búsqueda.
-              </p>
-              <button
-                onClick={() => setFilters(defaultFilters)}
-                className="btn-secondary mt-6 text-xs"
-              >
-                Limpiar Filtros
-              </button>
-            </div>
-          ) : layout === 'grid' ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-7">
-              {filtered.map(product => (
-                <ProductCard key={product.id} product={product} layout="grid" />
-              ))}
+              <p className="font-sans font-light text-sm text-luxury-lightgray">Probá con otros filtros.</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className={layout === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-7' : 'space-y-4'}>
               {filtered.map(product => (
-                <ProductCard key={product.id} product={product} layout="list" />
+                <ProductCard key={product.id} product={product} layout={layout} />
               ))}
             </div>
           )}

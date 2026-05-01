@@ -5,18 +5,18 @@ import { formatPrice } from '../store/cartStore';
 import { useOrdersStore } from '../store/ordersStore';
 import Logo from '../components/Logo';
 
-const WA_NUMBER = '5491139399189';
+const WA_NUMBER = '5491179047144';
 
 function buildWhatsAppMessage(
   orderNumber: string,
   form: Record<string, string>,
   total: number,
-  items: { name: string; size: number; qty: number; price: number }[]
+  items: { name: string; size: number; color: string; qty: number; price: number }[]
 ): string {
   const sep = '*----------------------------*';
 
   const lines: string[] = [
-    '*NUEVO PEDIDO - De Leparfum*',
+    '*NUEVO PEDIDO - Telas Web 2026*',
     sep,
     '',
     `*Pedido:* ${orderNumber}`,
@@ -27,7 +27,7 @@ function buildWhatsAppMessage(
     `   Tel: ${form.phone}`,
     '',
     '*Productos*',
-    ...items.map((i) => `   - ${i.name} ${i.size}ml x${i.qty}  ->  ${formatPrice(i.price * i.qty)}`),
+    ...items.map((i) => `   - ${i.name} ${i.color ? `(${i.color})` : ''} x${i.qty}m  ->  ${formatPrice(i.price * i.qty)}`),
     '',
     '*Direccion de envio*',
     `   ${form.address}`,
@@ -51,13 +51,14 @@ export default function OrderConfirmation() {
   const form: Record<string, string> = state?.form ?? {};
   const cartItems: {
     product: { name: string };
-    selectedSize: { ml: number; price: number };
+    selectedSize: { ml: number; price: number; color?: string };
     quantity: number;
   }[] = state?.items ?? [];
 
   const itemDetails = cartItems.map((i) => ({
     name: i.product.name,
     size: i.selectedSize.ml,
+    color: i.selectedSize.color ?? '',
     qty: i.quantity,
     price: i.selectedSize.price,
   }));

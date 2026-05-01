@@ -7,9 +7,10 @@ export interface OlfactoryNotes {
 export interface ProductSize {
   ml: number;
   price: number;
+  color?: string;
 }
 
-export type OlfactoryFamily = 'floral' | 'amaderada' | 'oriental' | 'fresca' | 'chipre' | 'fougere';
+export type OlfactoryFamily = 'panas' | 'telas' | 'cuerinas';
 export type Gender = 'women' | 'men' | 'unisex';
 
 export interface Product {
