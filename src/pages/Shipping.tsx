@@ -43,7 +43,7 @@ const faqs = [
 
 export default function Shipping() {
   return (
-    <div className="min-h-screen bg-cream pt-24">
+    <div className="min-h-screen bg-cream pt-20 md:pt-32">
       {/* Hero */}
       <div className="bg-luxury-charcoal text-white py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">

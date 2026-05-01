@@ -45,7 +45,7 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="pt-16 md:pt-20">
+    <div className="pt-20 md:pt-32">
       {/* Breadcrumb */}
       <div className="bg-cream border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

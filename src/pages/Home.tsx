@@ -3,7 +3,7 @@ import { Truck, RotateCcw, ShieldCheck, MessageCircle } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import FeaturedProducts from '../components/FeaturedProducts';
 import TestimonialsSection from '../components/TestimonialsSection';
-import NewsletterSection from '../components/NewsletterSection';
+
 
 const categories = [
   {
@@ -110,7 +110,6 @@ export default function Home() {
         </div>
       </section>
 
-      <NewsletterSection />
     </main>
   );
 }

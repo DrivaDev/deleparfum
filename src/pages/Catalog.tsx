@@ -63,12 +63,12 @@ export default function Catalog() {
   const pageTitle = isNewFilter ? 'Novedades' : 'Catálogo';
 
   return (
-    <div className="pt-16 md:pt-20 min-h-screen bg-white">
+    <div className="pt-20 md:pt-32 min-h-screen bg-white">
       {/* Page header */}
-      <div className="bg-cream py-12 md:py-16 border-b border-gray-100">
+      <div className="bg-white py-12 md:py-16 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="section-subtitle mb-3">Telas Web 2026</p>
-          <h1 className="section-title">{pageTitle}</h1>
+          <p className="font-sans font-light text-xs tracking-[0.35em] uppercase text-gold mb-3">Telas Web 2026</p>
+          <h1 className="font-serif text-3xl md:text-4xl text-luxury-black">{pageTitle}</h1>
           <p className="font-sans font-light text-sm text-luxury-gray mt-3">
             {filtered.length} línea{filtered.length !== 1 ? 's' : ''} encontrada{filtered.length !== 1 ? 's' : ''}
           </p>

@@ -10,7 +10,7 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <div className="pt-16 md:pt-20 min-h-screen flex flex-col items-center justify-center gap-5 bg-cream">
+      <div className="pt-20 md:pt-32 min-h-screen flex flex-col items-center justify-center gap-5 bg-cream">
         <ShoppingBag size={48} strokeWidth={0.8} className="text-gray-300" />
         <h1 className="font-serif text-3xl text-luxury-black">Tu bolsa está vacía</h1>
         <p className="font-sans font-light text-sm text-luxury-lightgray">
@@ -24,7 +24,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="pt-16 md:pt-20 min-h-screen bg-cream">
+    <div className="pt-20 md:pt-32 min-h-screen bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="mb-8">
           <p className="section-subtitle mb-2">Mi compra</p>

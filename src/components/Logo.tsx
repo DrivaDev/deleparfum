@@ -1,6 +1,6 @@
 interface LogoProps {
   variant?: 'dark' | 'light' | 'gold';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   showTagline?: boolean;
   compact?: boolean;
 }
@@ -9,6 +9,7 @@ const heights = {
   sm: 'h-8',
   md: 'h-10',
   lg: 'h-14',
+  xl: 'h-28',
 };
 
 // Logos are white SVGs.
@@ -22,7 +23,7 @@ const filters: Record<string, string> = {
 };
 
 export default function Logo({ variant = 'dark', size = 'md', compact = false }: LogoProps) {
-  const h = heights[size];
+  const h = heights[size as keyof typeof heights];
   const filter = filters[variant] ?? filters.dark;
 
   return (
