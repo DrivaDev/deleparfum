@@ -18,7 +18,7 @@ export default {
         },
         luxury: {
           black: '#1a1015',
-          charcoal: '#2d1e27',
+          charcoal: '#1a1015',
           gray: '#5c4052',
           lightgray: '#9a7d8a',
         },
